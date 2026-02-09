@@ -145,6 +145,13 @@ exports.Prisma.TestSessionScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.SettingScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  value: 'value',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -173,7 +180,8 @@ exports.Prisma.JsonNullValueFilter = {
 
 exports.Prisma.ModelName = {
   Question: 'Question',
-  TestSession: 'TestSession'
+  TestSession: 'TestSession',
+  Setting: 'Setting'
 };
 
 /**

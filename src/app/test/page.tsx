@@ -10,8 +10,8 @@ import { toPng } from 'html-to-image';
 
 type Question = {
   id: string;
-  questionType?: string; // BARU
-  imageUrl?: string;     // BARU
+  questionType?: string;
+  imageUrl?: string;
   category: string;
   questionText: string;
   audioUrl?: string;
@@ -24,7 +24,10 @@ export default function TestPage() {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({}); 
   const [flags, setFlags] = useState<Record<string, boolean>>({}); 
-  const [timeLeft, setTimeLeft] = useState(7200); 
+  
+  // UBAH: Default 0, nanti diisi dari database
+  const [timeLeft, setTimeLeft] = useState(0); 
+  
   const [loading, setLoading] = useState(true);
   const [isFinished, setIsFinished] = useState(false);
   const [score, setScore] = useState(0);
@@ -33,26 +36,42 @@ export default function TestPage() {
   const [userData, setUserData] = useState({ name: '', email: '', phone: '' });
   const certificateRef = useRef<HTMLDivElement>(null); 
 
+  // 1. Fetch Data Soal & SETTING DURASI
   useEffect(() => {
-    async function fetchData() {
+    async function initTest() {
       try {
-        const res = await fetch('/api/test');
-        const data: Question[] = await res.json();
+        // Ambil Soal
+        const resQ = await fetch('/api/test');
+        const dataQ: Question[] = await resQ.json();
         
-        // Shuffle Logic
+        // Ambil Durasi dari Settings (BARU)
+        const resS = await fetch('/api/settings');
+        const dataS = await resS.json();
+        
+        // Set Waktu (Menit -> Detik)
+        // Jika API settings gagal/kosong, fallback ke 120 menit (7200 detik)
+        const durationInSeconds = (dataS.duration || 120) * 60;
+        setTimeLeft(durationInSeconds);
+
+        // Shuffle Soal
         const shuffle = (arr: any[]) => arr.sort(() => Math.random() - 0.5);
-        const listening = shuffle(data.filter(q => q.category === 'LISTENING'));
-        const structure = shuffle(data.filter(q => q.category === 'STRUCTURE'));
-        const reading = shuffle(data.filter(q => q.category === 'READING'));
+        const listening = shuffle(dataQ.filter(q => q.category === 'LISTENING'));
+        const structure = shuffle(dataQ.filter(q => q.category === 'STRUCTURE'));
+        const reading = shuffle(dataQ.filter(q => q.category === 'READING'));
         
         setQuestions([...listening, ...structure, ...reading]);
         setLoading(false);
-      } catch (err) { console.error("Error fetching", err); }
+      } catch (err) { 
+        console.error("Error init", err);
+        // Fallback safety jika error
+        setTimeLeft(7200); 
+        setLoading(false);
+      }
     }
-    fetchData();
+    initTest();
   }, []);
 
-  // Timer Logic
+  // 2. Timer Logic
   useEffect(() => {
     if (loading || isFinished) return;
     const timer = setInterval(() => {
@@ -77,7 +96,6 @@ export default function TestPage() {
   };
 
   const finishTest = async () => {
-    // 1. Hitung Score (Hanya Pilihan Ganda)
     let tempScore = 0;
     questions.forEach(q => {
       if (q.questionType !== 'ESSAY' && answers[q.id] === q.correctAnswer) {
@@ -85,7 +103,6 @@ export default function TestPage() {
       }
     });
     
-    // Hitung Detail Per Bagian
     const listeningScore = questions.filter(q => q.category === 'LISTENING' && q.questionType !== 'ESSAY' && answers[q.id] === q.correctAnswer).length;
     const structureScore = questions.filter(q => q.category === 'STRUCTURE' && q.questionType !== 'ESSAY' && answers[q.id] === q.correctAnswer).length;
     const readingScore = questions.filter(q => q.category === 'READING' && q.questionType !== 'ESSAY' && answers[q.id] === q.correctAnswer).length;
@@ -138,6 +155,7 @@ export default function TestPage() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
       <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
       <p className="text-slate-500 font-medium animate-pulse">Menyiapkan Ruang Ujian...</p>
+      <p className="text-xs text-slate-400 mt-2">Memuat konfigurasi...</p>
     </div>
   );
 
@@ -156,23 +174,16 @@ export default function TestPage() {
 
      return (
         <div className="min-h-screen bg-slate-100 py-10 px-4 flex flex-col items-center justify-center font-sans">
-             {/* SERTIFIKAT AREA */}
              <div ref={certificateRef} style={{ backgroundColor: '#ffffff' }} className="p-10 w-full max-w-3xl shadow-2xl rounded-xl border-4 border-double border-slate-200 relative overflow-hidden text-slate-900">
-                
-                {/* Background Watermark */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none">
                     <GraduationCap className="w-96 h-96 text-slate-900" />
                 </div>
-
-                {/* Header */}
                 <div className="text-center border-b-2 border-slate-800 pb-6 mb-8 relative z-10">
                     <div className="flex justify-center mb-4"><GraduationCap className="w-16 h-16 text-blue-900" /></div>
                     <h1 className="text-4xl font-serif font-bold text-slate-900 tracking-wide uppercase">Statement of Result</h1>
                     <p className="text-slate-500 text-sm mt-2 font-medium tracking-widest">TOEFL PREDICTION TEST - COMPUTER BASED</p>
                     <p className="text-blue-900 font-bold mt-1">UNIVERSITAS IBN KHALDUN BOGOR</p>
                 </div>
-
-                {/* User Info */}
                 <div className="relative z-10">
                     <div className="grid grid-cols-2 gap-8 mb-8 text-sm">
                         <div>
@@ -184,8 +195,6 @@ export default function TestPage() {
                             <p className="text-xl font-bold text-slate-900">{new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
                         </div>
                     </div>
-
-                    {/* Tabel Nilai (YANG HILANG TADI) */}
                     <div className="bg-slate-50 rounded-xl border border-slate-200 p-6 mb-8">
                         <table className="w-full text-left">
                             <thead>
@@ -214,8 +223,6 @@ export default function TestPage() {
                             </tbody>
                         </table>
                     </div>
-
-                    {/* Total Score */}
                     <div className="flex justify-between items-center bg-slate-900 text-white p-6 rounded-xl shadow-lg">
                         <div>
                             <p className="text-slate-300 text-sm font-medium uppercase tracking-wider">Total Prediction Score</p>
@@ -225,8 +232,6 @@ export default function TestPage() {
                             {predictionScore > 677 ? 677 : predictionScore}
                         </div>
                     </div>
-
-                    {/* Footer / Tanda Tangan */}
                     <div className="mt-10 pt-6 border-t border-slate-200 flex justify-between items-end">
                        <div className="text-xs text-slate-400">
                           ID: {Math.random().toString(36).substr(2, 9).toUpperCase()}<br/>
@@ -239,8 +244,6 @@ export default function TestPage() {
                     </div>
                 </div>
              </div>
-             
-             {/* Tombol Aksi */}
              <div className="mt-8 flex gap-4 w-full max-w-3xl">
                 <button onClick={downloadPDF} className="flex-1 bg-blue-600 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-blue-700 hover:shadow-lg transition-all">
                     <Download className="w-5 h-5" /> Download Sertifikat PDF
@@ -286,7 +289,6 @@ export default function TestPage() {
               <button onClick={() => setFlags({...flags, [currentQ.id]: !flags[currentQ.id]})} className={`flex items-center gap-2 text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${flags[currentQ.id] ? 'bg-yellow-100 text-yellow-700' : 'text-slate-400 hover:bg-slate-100'}`}><Flag className="w-4 h-4" />{flags[currentQ.id] ? 'Ditandai' : 'Tandai Ragu'}</button>
             </div>
 
-            {/* AUDIO PLAYER */}
             {currentQ.audioUrl && (
               <div className="mb-8 p-1 bg-gradient-to-r from-slate-800 to-slate-900 rounded-2xl shadow-xl">
                 <div className="bg-slate-900/50 backdrop-blur-sm p-6 rounded-xl flex flex-col items-center justify-center text-white border border-white/10">
@@ -296,21 +298,17 @@ export default function TestPage() {
               </div>
             )}
 
-            {/* --- FITUR GAMBAR (BARU) --- */}
             {currentQ.imageUrl && (
                 <div className="mb-6 flex justify-center">
                     <img src={currentQ.imageUrl} alt="Soal Gambar" className="max-w-full h-auto max-h-[400px] rounded-lg border border-slate-200 shadow-sm object-contain" />
                 </div>
             )}
 
-            {/* TEXT SOAL */}
             <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 mb-8">
                 <p className="text-xl lg:text-2xl text-slate-800 leading-relaxed font-medium">{currentQ.questionText}</p>
             </div>
 
-            {/* --- AREA JAWABAN --- */}
             {currentQ.questionType === 'ESSAY' ? (
-                // TAMPILAN ESAI
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                     <label className="block text-sm font-bold text-slate-500 mb-3">Jawaban Esai Anda:</label>
                     <textarea 
@@ -322,7 +320,6 @@ export default function TestPage() {
                     />
                 </div>
             ) : (
-                // TAMPILAN PILIHAN GANDA (DIPERBAIKI)
                 <div className="grid gap-4">
                   {currentQ.options && currentQ.options.length > 0 ? (
                     currentQ.options.map((opt, idx) => {
@@ -339,9 +336,8 @@ export default function TestPage() {
                         )
                     })
                   ) : (
-                    // Fallback jika opsi kosong (biasanya data lama)
                     <div className="p-4 bg-red-50 text-red-600 rounded-lg border border-red-200">
-                        Error: Opsi jawaban tidak ditemukan. Coba reset database atau input ulang soal ini.
+                        Error: Opsi jawaban tidak ditemukan.
                     </div>
                   )}
                 </div>
@@ -350,7 +346,6 @@ export default function TestPage() {
           </div>
         </main>
         
-        {/* Sidebar Navigasi */}
         <aside className={`absolute lg:relative top-0 right-0 h-full w-80 bg-white border-l border-slate-200 z-10 transform transition-transform duration-300 ease-in-out flex flex-col ${showSidebar ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}`}>
            <div className="p-6 bg-slate-50 border-b border-slate-100"><h3 className="font-bold text-slate-800 flex items-center gap-2"><LayoutGrid className="w-5 h-5 text-blue-500" /> Navigasi Soal</h3></div>
            <div className="flex-1 overflow-y-auto p-6"><div className="grid grid-cols-5 gap-3">{questions.map((q, idx) => { const isAnswered = !!answers[q.id]; const isCurrent = idx === currentIdx; const isFlagged = flags[q.id]; return (<button key={q.id} onClick={() => setCurrentIdx(idx)} className={`w-10 h-10 rounded-lg text-sm font-bold transition-all relative ${isCurrent ? 'bg-slate-800 text-white ring-2 ring-blue-400 ring-offset-2 scale-110 z-10' : ''} ${!isCurrent && isAnswered ? 'bg-blue-100 text-blue-700 border border-blue-200' : ''} ${!isCurrent && !isAnswered ? 'bg-white border border-slate-200 text-slate-400 hover:bg-slate-50 hover:border-slate-300' : ''}`}>{idx + 1}{isFlagged && <span className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full border-2 border-white"></span>}</button>) })}</div></div>
@@ -358,7 +353,6 @@ export default function TestPage() {
         </aside>
       </div>
 
-      {/* Footer Mobile */}
       <div className="bg-white border-t border-slate-200 p-4 lg:hidden flex justify-between z-20">
          <button disabled={currentIdx === 0} onClick={() => setCurrentIdx(prev => prev - 1)} className="px-4 py-2 rounded-lg bg-slate-100 text-slate-600 font-medium disabled:opacity-50"><ChevronLeft className="w-5 h-5" /></button>
          <span className="font-bold text-slate-700 pt-2">{currentIdx + 1} / {questions.length}</span>

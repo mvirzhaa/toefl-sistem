@@ -49,3 +49,10 @@ model TestSession {
   answers   Json
   createdAt DateTime @default(now())
 }
+
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique // Contoh: "exam_duration"
+  value     String // Contoh: "120"
+  updatedAt DateTime @updatedAt
+}
