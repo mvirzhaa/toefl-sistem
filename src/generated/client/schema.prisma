@@ -1,0 +1,41 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js" // <--- INI YANG BENAR (Ada -js nya)
+  output   = "../src/generated/client" // Kita rapikan path-nya ke sini
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Model Soal (Pastikan ini ada!)
+model Question {
+  id            String   @id @default(cuid())
+  type          String // "MULTIPLE_CHOICE"
+  category      String // "STRUCTURE", "LISTENING", dll
+  questionText  String
+  audioUrl      String?
+  options       Json? // Array pilihan jawaban
+  correctAnswer String
+  createdAt     DateTime @default(now())
+}
+
+// prisma/schema.prisma
+
+// ... model Question tetap sama ...
+
+model TestSession {
+  id    String @id @default(cuid())
+  // HAPUS: userId String
+  // GANTI DENGAN 3 BARIS INI:
+  name  String
+  email String
+  phone String
+
+  score     Int
+  totalQ    Int
+  answers   Json
+  createdAt DateTime @default(now())
+}
