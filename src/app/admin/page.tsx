@@ -1,8 +1,16 @@
 "use client";
 
-import { useState, useRef } from 'react';
-import { Save, Headphones, BookOpen, FileText, FileSpreadsheet, Info } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Save, Headphones, BookOpen, FileText, FileSpreadsheet, Info, Trash2, Search, RefreshCw } from 'lucide-react';
 import Papa from 'papaparse';
+
+// Tipe Data Soal
+type Question = {
+  id: string;
+  category: string;
+  questionText: string;
+  correctAnswer: string;
+};
 
 export default function AdminDashboard() {
   const [loading, setLoading] = useState(false);
@@ -21,7 +29,47 @@ export default function AdminDashboard() {
     correctAnswer: 'A',
   });
 
-  // --- 1. LOGIKA IMPORT CSV (BARU) ---
+  // State Daftar Soal (BARU)
+  const [questionList, setQuestionList] = useState<Question[]>([]);
+  const [filterCategory, setFilterCategory] = useState('ALL');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // --- 1. FETCH DATA SOAL (BARU) ---
+  const fetchQuestions = async () => {
+    try {
+      const res = await fetch('/api/questions'); // Pastikan API GET tersedia
+      if (res.ok) {
+        const data = await res.json();
+        setQuestionList(data);
+      }
+    } catch (error) {
+      console.error("Gagal mengambil data soal");
+    }
+  };
+
+  // Ambil data saat halaman dibuka
+  useEffect(() => {
+    fetchQuestions();
+  }, []);
+
+  // --- 2. HAPUS SOAL (BARU) ---
+  const handleDelete = async (id: string) => {
+    if (!confirm("Yakin ingin menghapus soal ini?")) return;
+    
+    try {
+      const res = await fetch(`/api/questions?id=${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        alert("Soal dihapus!");
+        fetchQuestions(); // Refresh tabel
+      } else {
+        alert("Gagal menghapus.");
+      }
+    } catch (err) {
+      alert("Error sistem.");
+    }
+  };
+
+  // --- 3. LOGIKA IMPORT CSV ---
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -34,7 +82,6 @@ export default function AdminDashboard() {
       complete: async (results) => {
         const rows = results.data as any[];
 
-        // Validasi Header CSV
         if (!rows[0] || !rows[0].questionText || !rows[0].correctAnswer) {
           alert("Format CSV salah! Pastikan header kolom: category, questionText, optionA, optionB, optionC, optionD, correctAnswer");
           setLoading(false);
@@ -44,7 +91,6 @@ export default function AdminDashboard() {
         let successCount = 0;
         let failCount = 0;
 
-        // Loop upload data
         for (const row of rows) {
           const payload = {
             type: 'MULTIPLE_CHOICE',
@@ -70,6 +116,7 @@ export default function AdminDashboard() {
         alert(`Proses Selesai!\n✅ Berhasil: ${successCount}\n❌ Gagal: ${failCount}`);
         setLoading(false);
         if (fileInputRef.current) fileInputRef.current.value = ""; 
+        fetchQuestions(); // Refresh tabel setelah import
       },
       error: (err) => {
         alert("Gagal membaca file CSV: " + err.message);
@@ -78,7 +125,7 @@ export default function AdminDashboard() {
     });
   };
 
-  // --- 2. LOGIKA INPUT MANUAL (LAMA - TETAP SAMA) ---
+  // --- 4. INPUT MANUAL ---
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -101,6 +148,7 @@ export default function AdminDashboard() {
       if (res.ok) {
         alert('✅ Soal berhasil disimpan!');
         setFormData({ ...formData, questionText: '', optionA: '', optionB: '', optionC: '', optionD: '' });
+        fetchQuestions(); // Refresh tabel
       } else {
         alert('❌ Gagal menyimpan soal.');
       }
@@ -110,17 +158,24 @@ export default function AdminDashboard() {
     setLoading(false);
   };
 
+  // Filter Logika untuk Tabel
+  const filteredQuestions = questionList.filter(q => {
+    const matchCategory = filterCategory === 'ALL' || q.category === filterCategory;
+    const matchSearch = q.questionText.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchCategory && matchSearch;
+  });
+
   return (
     <div className="max-w-5xl mx-auto pb-20">
       
-      {/* HEADER HALAMAN (Update: Ada Tombol Import di Kanan) */}
+      {/* HEADER HALAMAN */}
       <div className="mb-8 flex flex-col md:flex-row justify-between items-end md:items-center gap-4">
         <div>
           <h2 className="text-3xl font-extrabold text-slate-900">TOEFL Question Bank</h2>
-          <p className="text-slate-500 mt-2">Panel Admin untuk input soal Listening, Structure, dan Reading.</p>
+          <p className="text-slate-500 mt-2">Panel Admin untuk input & kelola soal.</p>
         </div>
 
-        {/* TOMBOL IMPORT CSV (BARU) */}
+        {/* TOMBOL IMPORT CSV */}
         <div className="flex gap-2">
            <input 
              type="file" 
@@ -140,28 +195,24 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* INFO BOX (Panduan CSV) */}
+      {/* INFO BOX */}
       <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-8 flex items-start gap-3">
         <Info className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
         <div className="text-sm text-blue-800">
           <p className="font-bold mb-1">Panduan Import Massal:</p>
-          <p>Siapkan file CSV dengan header kolom (huruf kecil semua):</p>
           <code className="bg-white px-2 py-1 rounded border border-blue-200 text-xs font-mono mt-1 block w-fit text-slate-700">
             category, questionText, optionA, optionB, optionC, optionD, correctAnswer, audioUrl
           </code>
         </div>
       </div>
 
-      {/* --- FORM CARD PREMIUM (DESAIN ANDA YG DIPERTAHANKAN) --- */}
-      <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
-        
-        {/* HEADER KARTU (Gaya Executive Dark Mode - TETAP SAMA) */}
+      {/* --- FORM CARD PREMIUM (TIDAK BERUBAH) --- */}
+      <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden mb-12">
         <div className="bg-slate-900 px-6 py-4 flex items-center justify-between">
            <div className="flex items-center gap-3">
               <FileText className="text-blue-400 w-5 h-5" />
               <span className="text-white font-semibold tracking-wide">Input Soal Manual</span>
            </div>
-           {/* Hiasan Titik Ala Mac */}
            <div className="flex gap-2">
               <div className="w-3 h-3 rounded-full bg-red-500"></div>
               <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
@@ -170,8 +221,6 @@ export default function AdminDashboard() {
         </div>
         
         <form onSubmit={handleSubmit} className="p-8 space-y-8 bg-slate-50/30">
-          
-          {/* Baris 1: Kategori & Audio */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <label className="block text-sm font-bold text-slate-700 mb-2">Kategori Soal</label>
@@ -205,7 +254,6 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* Area Soal */}
           <div>
             <label className="block text-sm font-bold text-slate-700 mb-2">Pertanyaan / Teks Soal</label>
             <textarea 
@@ -218,7 +266,6 @@ export default function AdminDashboard() {
             />
           </div>
 
-          {/* Pilihan Jawaban */}
           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
             <label className="block text-sm font-bold text-slate-800 mb-4">Pilihan Jawaban</label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -242,9 +289,7 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* Kunci Jawaban & Submit */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-2">
-            
             <div className="w-full md:w-auto">
               <label className="block text-sm font-bold text-slate-700 mb-3">Kunci Jawaban Benar</label>
               <div className="flex gap-3">
@@ -277,11 +322,108 @@ export default function AdminDashboard() {
                 </>
               )}
             </button>
-            
           </div>
-
         </form>
       </div>
+
+      {/* --- BAGIAN BARU: LIST SOAL --- */}
+      <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
+        <div className="bg-slate-100 px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 border-b border-slate-200">
+           <h3 className="font-bold text-slate-800 flex items-center gap-2">
+              <BookOpen className="w-5 h-5 text-slate-500" /> Daftar Soal Database
+           </h3>
+           
+           <div className="flex gap-2 w-full md:w-auto">
+             {/* Filter Kategori */}
+             <select 
+               className="p-2 rounded-lg border border-slate-300 text-sm font-medium bg-white"
+               value={filterCategory}
+               onChange={(e) => setFilterCategory(e.target.value)}
+             >
+               <option value="ALL">Semua Kategori</option>
+               <option value="LISTENING">Listening</option>
+               <option value="STRUCTURE">Structure</option>
+               <option value="READING">Reading</option>
+             </select>
+
+             {/* Search */}
+             <div className="relative flex-1 md:w-64">
+               <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
+               <input 
+                 type="text" 
+                 placeholder="Cari soal..." 
+                 className="w-full pl-9 p-2 rounded-lg border border-slate-300 text-sm focus:ring-1 focus:ring-blue-500 outline-none"
+                 value={searchQuery}
+                 onChange={(e) => setSearchQuery(e.target.value)}
+               />
+             </div>
+             
+             <button onClick={fetchQuestions} className="p-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 text-slate-600" title="Refresh">
+               <RefreshCw className="w-4 h-4" />
+             </button>
+           </div>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm text-left">
+            <thead className="bg-slate-50 text-slate-500 font-semibold border-b border-slate-200">
+              <tr>
+                <th className="px-6 py-3 w-10">No</th>
+                <th className="px-6 py-3 w-32">Kategori</th>
+                <th className="px-6 py-3">Pertanyaan</th>
+                <th className="px-6 py-3 w-20 text-center">Kunci</th>
+                <th className="px-6 py-3 w-20 text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {filteredQuestions.length > 0 ? (
+                filteredQuestions.map((q, idx) => (
+                  <tr key={q.id} className="hover:bg-slate-50 transition-colors">
+                    <td className="px-6 py-4 text-slate-400">{idx + 1}</td>
+                    <td className="px-6 py-4">
+                      <span className={`px-2 py-1 rounded text-xs font-bold ${
+                        q.category === 'LISTENING' ? 'bg-purple-100 text-purple-700' :
+                        q.category === 'STRUCTURE' ? 'bg-blue-100 text-blue-700' :
+                        'bg-orange-100 text-orange-700'
+                      }`}>
+                        {q.category}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-slate-700 font-medium line-clamp-2 max-w-lg">
+                      {q.questionText}
+                    </td>
+                    <td className="px-6 py-4 text-center font-bold text-slate-800 bg-slate-50/50">
+                      {q.correctAnswer}
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <button 
+                        onClick={() => handleDelete(q.id)}
+                        className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Hapus Soal"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className="px-6 py-8 text-center text-slate-400 italic">
+                    Belum ada data soal yang sesuai.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        
+        {/* Footer Tabel */}
+        <div className="bg-slate-50 px-6 py-3 border-t border-slate-200 text-xs text-slate-500 flex justify-between">
+           <span>Total Soal: <strong>{questionList.length}</strong></span>
+           <span>Menampilkan: <strong>{filteredQuestions.length}</strong></span>
+        </div>
+      </div>
+
     </div>
   );
 }

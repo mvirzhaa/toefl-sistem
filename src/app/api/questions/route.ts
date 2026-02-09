@@ -1,37 +1,56 @@
-// src/app/api/questions/route.ts
 import { NextResponse } from 'next/server';
-// PERHATIKAN: Import dari lokasi baru yang kita set di schema tadi
-import { PrismaClient } from '@/generated/client'; 
+import { PrismaClient } from '@/generated/client';
 
+const prisma = new PrismaClient();
+
+// 1. GET: Ambil Semua Soal
+export async function GET() {
+  try {
+    const questions = await prisma.question.findMany({
+      orderBy: { createdAt: 'desc' } // Soal terbaru di atas
+    });
+    return NextResponse.json(questions);
+  } catch (error) {
+    return NextResponse.json({ error: 'Gagal mengambil soal' }, { status: 500 });
+  }
+}
+
+// 2. POST: Tambah Soal
 export async function POST(request: Request) {
-  // Inisialisasi client baru
-  const prisma = new PrismaClient();
-
   try {
     const body = await request.json();
-    console.log("Mencoba menyimpan:", body);
-
-    const question = await prisma.question.create({
+    const newQuestion = await prisma.question.create({
       data: {
         type: body.type,
         category: body.category,
         questionText: body.questionText,
-        audioUrl: body.audioUrl || null,
-        options: body.options || [], 
+        audioUrl: body.audioUrl || '',
+        options: body.options, // Array String
         correctAnswer: body.correctAnswer,
       },
     });
+    return NextResponse.json(newQuestion);
+  } catch (error) {
+    return NextResponse.json({ error: 'Gagal menyimpan soal' }, { status: 500 });
+  }
+}
 
-    return NextResponse.json(question, { status: 201 });
+// 3. DELETE: Hapus Soal berdasarkan ID
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
 
-  } catch (error: any) {
-    console.error("❌ ERROR SERVER:", error);
-    return NextResponse.json(
-      { error: "Gagal menyimpan", details: error.message }, 
-      { status: 500 }
-    );
-  } finally {
-    // Tutup koneksi
-    await prisma.$disconnect();
+    if (!id) {
+      return NextResponse.json({ error: 'ID tidak ditemukan' }, { status: 400 });
+    }
+
+    await prisma.question.delete({
+      where: { id: id },
+    });
+
+    return NextResponse.json({ message: 'Soal berhasil dihapus' });
+  } catch (error) {
+    return NextResponse.json({ error: 'Gagal menghapus soal' }, { status: 500 });
   }
 }
