@@ -1,31 +1,21 @@
 category,questionText,optionA,optionB,optionC,optionD,correctAnswer,audioUrl
-STRUCTURE,The North Platte River ___ from Wyoming into Nebraska.,it flowed,flows,flowing,with flowing,B,
-STRUCTURE,___ Biloxi received its name from a Sioux word meaning "first people.",The city of,Located in,It is in,The tour included,A,
-STRUCTURE,A pride of lions ___ up to forty lions, including one to three males, several females, and cubs.,can contain,it contains,contain,containing,A,
-STRUCTURE,___ tea plant are small and white.,The,On the,Having flowers the,The flowers of the,D,
-STRUCTURE,The tetracyclines, ___ antibiotics, are used to treat infections.,are a family of,being a family,a family of,their family is,C,
-STRUCTURE,Any possible academic assistance from taking stimulants ___ marginal at best.,it is,there is,is,as,C,
-STRUCTURE,Henry Adams, born in Boston, ___ famous as a historian and novelist.,became,and became,he was,and he became,A,
-STRUCTURE,The major cause ___ the pull of the Moon on the Earth.,the ocean tides are,of ocean tides is,of the tides in the ocean,the oceans' tides,B,
-STRUCTURE,Still a novelty in the late nineteenth century, ___ limited to the rich.,was photography,photography was,it was photography,when photography,B,
-STRUCTURE,A computerized map of the freeways using information gathered by sensors embedded in the pavement ___ on a local cable channel during rush hours.,airs,airing,air,to air,A,
-READING,"The passage implies that the invention of the glass beehive was important because...",it allowed scientists to observe bees without disturbing them,it made honey production faster,it kept the bees warmer in winter,it was cheaper than wood,A,
-READING,"According to the text, what is the primary function of the worker bee?",To lay eggs,To defend the hive,To gather nectar and pollen,To mate with the queen,C,
-READING,"The word ""thrive"" in line 5 is closest in meaning to...",falter,flourish,hibernate,migrate,B,
-READING,"Which of the following is NOT mentioned as a threat to coral reefs?",Overfishing,Pollution,Rising ocean temperatures,Volcanic activity,D,
-READING,"The author's attitude toward the subject can best be described as...",indifferent,critical,objective,enthusiastic,C,
-READING,"What does the passage mainly discuss?",The history of aviation,The biology of birds,The mechanics of flight,The weather patterns,A,
-READING,"It can be inferred from the passage that the early settlers...",were inexperienced farmers,brought their own food,traded with local tribes,arrived in winter,C,
-READING,"The phrase ""in tandem"" in the second paragraph is closest in meaning to...",separately,together,quickly,randomly,B,
-READING,"According to the passage, why did the population increase?",Better healthcare,More food,Immigration,Less war,A,
-READING,"Which of the following best summarizes the last paragraph?",The future is uncertain,Technology will solve all problems,Education is key,Resources are limited,C,
-LISTENING,"What does the man mean?",He is going to the party,He is too busy to go,He doesn't like parties,He will go later,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/1.mp3
-LISTENING,"What does the woman imply about the exam?",It was very easy,It was harder than expected,She didn't study for it,She got a perfect score,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/2.mp3
-LISTENING,"Where does this conversation probably take place?",In a library,In a restaurant,In a bank,In a doctor's office,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/3.mp3
-LISTENING,"What will the man probably do next?",Buy a new car,Fix his old car,Take the bus,Walk to work,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/4.mp3
-LISTENING,"What are the speakers discussing?",A recent movie,A homework assignment,A sports game,A vacation plan,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/5.mp3
-LISTENING,"How does the woman feel?",Happy,Angry,Worried,Confused,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/6.mp3
-LISTENING,"What does the man suggest the woman do?",See a doctor,Take a nap,Drink some water,Eat some food,A,https://www2.mcdaniel.edu/english/esl/listening/mp3/7.mp3
-LISTENING,"What is the main topic of the lecture?",American History,Biology,Chemistry,Art History,D,https://www2.mcdaniel.edu/english/esl/listening/mp3/8.mp3
-LISTENING,"According to the speaker, what is the most important rule?",Be on time,Do your homework,Listen carefully,Raise your hand,A,https://www2.mcdaniel.edu/english/esl/listening/mp3/9.mp3
-LISTENING,"Why is the student visiting the professor?",To ask for a grade change,To discuss a research paper,To drop the class,To ask for a recommendation letter,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/10.mp3
+LISTENING,"(Man): I heard you're moving to New York. (Woman): Yes, I got a job at a law firm there. (Narrator): What does the woman mean?",She is going to New York for a vacation.,She found a new job in New York.,She is studying law in New York.,She is visiting a law firm.,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/1.mp3
+LISTENING,"(Woman): The history exam was incredibly difficult, wasn't it? (Man): You can say that again! (Narrator): What does the man mean?",He wants the woman to repeat the question.,He thinks the exam was easy.,He agrees that the exam was hard.,He has taken the exam twice.,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/2.mp3
+LISTENING,"(Man): Are you going to the library now? (Woman): I would, but I have a dentist appointment at three. (Narrator): What will the woman probably do next?",Go to the library.,Go to the dentist.,Meet the man at three.,Study for an exam.,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/3.mp3
+LISTENING,"(Woman): I can't believe I forgot my wallet. (Man): Don't worry, I've got you covered for lunch. (Narrator): What does the man offer to do?",Pay for the woman's lunch.,Go back to get her wallet.,Lend her some money for rent.,Buy her a new wallet.,A,https://www2.mcdaniel.edu/english/esl/listening/mp3/4.mp3
+LISTENING,"(Man): How did you like the performance? (Woman): Ideally, it could have been shorter. (Narrator): What is the woman's opinion?",It was too short.,It was the perfect length.,It was too long.,It was ideal.,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/5.mp3
+STRUCTURE,The North Platte River ______ from Wyoming into Nebraska.,it flowed,flows,flowing,with flowing,B,
+STRUCTURE,______ Biloxi received its name from a Sioux word meaning "first people.",The city of,Located in,It is in,The tour included,A,
+STRUCTURE,A pride of lions ______ up to forty lions, including one to three males, several females, and cubs.,can contain,it contains,contain,containing,A,
+STRUCTURE,The tea plant, ______ small and white flowers, is an evergreen shrub.,which has,has,having,to have,A,
+STRUCTURE,Unlike most birds, ______ the ability to fly.,penguins do not have,penguins are not,penguins that do not have,not having penguins,A,
+STRUCTURE,"The (A) *huge* increase in (B) *tourist* have had a (C) *positive* economic effect on the (D) *local* business.",huge,tourist,positive,local,B,
+STRUCTURE,"Waitresses (A) *usually* receive (B) *tips* from their customers, (C) *which* constitute a major part of (D) *her* income.",usually,tips,which,her,D,
+STRUCTURE,"Guppies are (A) *sometimes* call (B) *rainbow* fish (C) *because* of the (D) *males'* bright colors.",sometimes,rainbow,because,males',A,
+STRUCTURE,"The (A) *grizzly* bear, (B) *which* can grow (C) *up to* eight feet tall, has (D) *been* called a dangerous animal.",grizzly,which,up to,been,D,
+STRUCTURE,"(A) *Despite* of the rain, the (B) *baseball* game (C) *was* not (D) *cancelled*.",Despite,baseball,was,cancelled,A,
+READING,"The passage mainly discusses...",The migration of monarch butterflies,The life cycle of insects,The geography of Mexico,The danger of extinction,A,
+READING,"The word 'swarms' in line 3 is closest in meaning to...",Small groups,Large crowds,Flight patterns,Solo travelers,B,
+READING,"According to the passage, where do monarch butterflies spend the winter?",In Canada,In the United States,In Central Mexico,In South America,C,
+READING,"It can be inferred from the passage that monarch butterflies...",Are unable to fly long distances,Prefer cold climates,Travel in groups for safety,Migrate to breed in the south,D,
+READING,"The word 'perilous' in line 10 could best be replaced by...",Safe,Dangerous,Easy,Long,B,

@@ -64,20 +64,59 @@ export default function AdminDashboard() {
     fetchQuestions();
   };
 
+  // --- KEMBALIKAN LOGIKA IMPORT CSV YANG HILANG ---
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
     setLoading(true);
+    
     Papa.parse(file, {
       header: true,
       skipEmptyLines: true,
       complete: async (results) => {
         const rows = results.data as any[];
-        // ... (Logika CSV lama tetap sama, skip untuk mempersingkat)
-        // Pastikan CSV punya kolom baru jika mau support import massal esai
-        alert("Fitur CSV saat ini hanya untuk Pilihan Ganda standar."); 
+
+        if (!rows[0] || !rows[0].questionText || !rows[0].correctAnswer) {
+          alert("Format CSV salah! Pastikan header kolom: category, questionText, optionA, optionB, optionC, optionD, correctAnswer");
+          setLoading(false);
+          return;
+        }
+
+        let successCount = 0;
+        let failCount = 0;
+
+        for (const row of rows) {
+          const payload = {
+            category: row.category?.toUpperCase() || 'STRUCTURE',
+            questionText: row.questionText,
+            questionType: 'CHOICE', // Default ke Pilihan Ganda jika dari CSV
+            imageUrl: '', 
+            audioUrl: row.audioUrl || '',
+            options: [row.optionA, row.optionB, row.optionC, row.optionD],
+            correctAnswer: row.correctAnswer.toUpperCase(),
+          };
+
+          try {
+            const res = await fetch('/api/questions', {
+              method: 'POST',
+              body: JSON.stringify(payload),
+            });
+            if (res.ok) successCount++;
+            else failCount++;
+          } catch (err) {
+            failCount++;
+          }
+        }
+
+        alert(`Proses Selesai!\n✅ Berhasil: ${successCount}\n❌ Gagal: ${failCount}`);
         setLoading(false);
-        fetchQuestions();
+        if (fileInputRef.current) fileInputRef.current.value = ""; 
+        fetchQuestions(); // Refresh tabel setelah import
+      },
+      error: (err) => {
+        alert("Gagal membaca file CSV: " + err.message);
+        setLoading(false);
       }
     });
   };
@@ -122,7 +161,7 @@ export default function AdminDashboard() {
   });
 
   return (
-    <div className="max-w-5xl mx-auto pb-20">
+    <div className="max-w-5xl mx-auto pb-20 text-slate-800">
       <div className="mb-8 flex flex-col md:flex-row justify-between items-end md:items-center gap-4">
         <div>
           <h2 className="text-3xl font-extrabold text-slate-900">TOEFL Question Bank</h2>
