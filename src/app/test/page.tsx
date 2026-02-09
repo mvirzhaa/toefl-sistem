@@ -8,6 +8,31 @@ import {
 import jsPDF from 'jspdf';
 import { toPng } from 'html-to-image';
 
+// --- 1. TABEL KONVERSI TOEFL ITP (STANDAR ETS) ---
+// Format: [Raw Score]: Scaled Score
+const LISTENING_CONVERSION: Record<number, number> = {
+  50:68, 49:67, 48:66, 47:65, 46:63, 45:62, 44:61, 43:60, 42:59, 41:58, 40:57,
+  39:57, 38:56, 37:55, 36:54, 35:54, 34:53, 33:52, 32:52, 31:51, 30:51,
+  29:50, 28:49, 27:49, 26:48, 25:48, 24:47, 23:47, 22:46, 21:45, 20:45,
+  19:44, 18:43, 17:42, 16:41, 15:41, 14:39, 13:38, 12:37, 11:35, 10:33,
+  9:32, 8:32, 7:31, 6:30, 5:29, 4:28, 3:27, 2:26, 1:25, 0:24
+};
+
+const STRUCTURE_CONVERSION: Record<number, number> = {
+  40:68, 39:67, 38:65, 37:63, 36:61, 35:60, 34:58, 33:57, 32:56, 31:55,
+  30:54, 29:53, 28:52, 27:51, 26:50, 25:49, 24:48, 23:47, 22:46, 21:45,
+  20:44, 19:43, 18:42, 17:41, 16:40, 15:40, 14:38, 13:37, 12:36, 11:35,
+  10:33, 9:31, 8:29, 7:27, 6:26, 5:25, 4:23, 3:22, 2:21, 1:20, 0:20
+};
+
+const READING_CONVERSION: Record<number, number> = {
+  50:67, 49:66, 48:65, 47:64, 46:63, 45:61, 44:60, 43:59, 42:58, 41:57, 40:56,
+  39:55, 38:54, 37:53, 36:52, 35:52, 34:51, 33:50, 32:49, 31:48, 30:48,
+  29:47, 28:46, 27:46, 26:45, 25:44, 24:43, 23:43, 22:42, 21:41, 20:40,
+  19:39, 18:38, 17:37, 16:36, 15:35, 14:34, 13:32, 12:31, 11:30, 10:29,
+  9:28, 8:28, 7:27, 6:26, 5:25, 4:24, 3:23, 2:23, 1:22, 0:21
+};
+
 type Question = {
   id: string;
   questionType?: string;
@@ -25,14 +50,18 @@ export default function TestPage() {
   const [answers, setAnswers] = useState<Record<string, string>>({}); 
   const [flags, setFlags] = useState<Record<string, boolean>>({}); 
   
-  // UBAH: Default 0, nanti diisi dari database
+  // Waktu default 0, nanti diisi dari database settings
   const [timeLeft, setTimeLeft] = useState(0); 
   
   const [loading, setLoading] = useState(true);
   const [isFinished, setIsFinished] = useState(false);
-  const [score, setScore] = useState(0);
-  const [showSidebar, setShowSidebar] = useState(true); 
   
+  // STATE HASIL SCORE (Diganti logicnya)
+  const [finalScore, setFinalScore] = useState(0);
+  const [sectionScores, setSectionScores] = useState({ listening: 0, structure: 0, reading: 0 }); // Nilai Konversi
+  const [rawScores, setRawScores] = useState({ listening: 0, structure: 0, reading: 0 }); // Jumlah Benar
+  
+  const [showSidebar, setShowSidebar] = useState(true); 
   const [userData, setUserData] = useState({ name: '', email: '', phone: '' });
   const certificateRef = useRef<HTMLDivElement>(null); 
 
@@ -44,12 +73,11 @@ export default function TestPage() {
         const resQ = await fetch('/api/test');
         const dataQ: Question[] = await resQ.json();
         
-        // Ambil Durasi dari Settings (BARU)
+        // Ambil Durasi dari Settings
         const resS = await fetch('/api/settings');
         const dataS = await resS.json();
         
         // Set Waktu (Menit -> Detik)
-        // Jika API settings gagal/kosong, fallback ke 120 menit (7200 detik)
         const durationInSeconds = (dataS.duration || 120) * 60;
         setTimeLeft(durationInSeconds);
 
@@ -63,7 +91,6 @@ export default function TestPage() {
         setLoading(false);
       } catch (err) { 
         console.error("Error init", err);
-        // Fallback safety jika error
         setTimeLeft(7200); 
         setLoading(false);
       }
@@ -95,22 +122,45 @@ export default function TestPage() {
     setAnswers({ ...answers, [questions[currentIdx].id]: val });
   };
 
-  const finishTest = async () => {
-    let tempScore = 0;
-    questions.forEach(q => {
-      if (q.questionType !== 'ESSAY' && answers[q.id] === q.correctAnswer) {
-         tempScore += 1;
-      }
-    });
+  // --- LOGIKA HITUNG SKOR BARU (TOEFL STANDARD) ---
+  const calculateSectionScore = (category: string, conversionTable: Record<number, number>, maxQuestions: number) => {
+    // 1. Ambil soal berdasarkan kategori (hanya Pilihan Ganda)
+    const sectionQuestions = questions.filter(q => q.category === category && q.questionType !== 'ESSAY');
+    const totalQ = sectionQuestions.length;
     
-    const listeningScore = questions.filter(q => q.category === 'LISTENING' && q.questionType !== 'ESSAY' && answers[q.id] === q.correctAnswer).length;
-    const structureScore = questions.filter(q => q.category === 'STRUCTURE' && q.questionType !== 'ESSAY' && answers[q.id] === q.correctAnswer).length;
-    const readingScore = questions.filter(q => q.category === 'READING' && q.questionType !== 'ESSAY' && answers[q.id] === q.correctAnswer).length;
-    
-    const totalQ = questions.filter(q => q.questionType !== 'ESSAY').length || 1;
-    const predictionScore = Math.round(((tempScore / totalQ) * 500) + 200);
+    // 2. Hitung jawaban benar (Raw Score)
+    const correctCount = sectionQuestions.filter(q => answers[q.id] === q.correctAnswer).length;
 
-    setScore(tempScore);
+    // 3. PROYEKSI (Jika soal < standar TOEFL, kita proyeksikan)
+    // Contoh: Soal cuma 10, Benar 8. Maka proyeksi ke 50 soal = (8/10)*50 = 40.
+    let projectedRaw = correctCount;
+    if (totalQ > 0 && totalQ < maxQuestions) {
+        projectedRaw = Math.round((correctCount / totalQ) * maxQuestions);
+    }
+    
+    // 4. Konversi menggunakan tabel
+    // Pastikan tidak melebihi max key di tabel
+    const lookupKey = projectedRaw > maxQuestions ? maxQuestions : projectedRaw;
+    // Fallback ke nilai 0 jika key tidak ditemukan
+    const convertedScore = conversionTable[lookupKey] || conversionTable[0] || 20;
+
+    return { raw: correctCount, total: totalQ, converted: convertedScore };
+  };
+
+  const finishTest = async () => {
+    // Hitung per sesi menggunakan helper function di atas
+    // Listening Max 50, Structure Max 40, Reading Max 50
+    const listening = calculateSectionScore('LISTENING', LISTENING_CONVERSION, 50);
+    const structure = calculateSectionScore('STRUCTURE', STRUCTURE_CONVERSION, 40);
+    const reading = calculateSectionScore('READING', READING_CONVERSION, 50);
+
+    // Rumus TOEFL ITP: (L + S + R) * 10 / 3
+    const totalScore = Math.floor(((listening.converted + structure.converted + reading.converted) * 10) / 3);
+
+    // Update State
+    setRawScores({ listening: listening.raw, structure: structure.raw, reading: reading.raw });
+    setSectionScores({ listening: listening.converted, structure: structure.converted, reading: reading.converted });
+    setFinalScore(totalScore);
     setIsFinished(true);
 
     const userString = localStorage.getItem("cbt_user");
@@ -131,8 +181,8 @@ export default function TestPage() {
           body: JSON.stringify({
             name: uData.name,
             email: uData.email,
-            score: predictionScore,
-            details: { listening: listeningScore, structure: structureScore, reading: readingScore }
+            score: totalScore,
+            details: { listening: listening.raw, structure: structure.raw, reading: reading.raw }
           })
         });
       }
@@ -155,23 +205,12 @@ export default function TestPage() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
       <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
       <p className="text-slate-500 font-medium animate-pulse">Menyiapkan Ruang Ujian...</p>
-      <p className="text-xs text-slate-400 mt-2">Memuat konfigurasi...</p>
+      <p className="text-xs text-slate-400 mt-2">Memuat konfigurasi & soal...</p>
     </div>
   );
 
   // --- TAMPILAN HASIL (SERTIFIKAT LENGKAP) ---
   if (isFinished) {
-     const listeningCount = questions.filter(q => q.category === 'LISTENING').length;
-     const structureCount = questions.filter(q => q.category === 'STRUCTURE').length;
-     const readingCount = questions.filter(q => q.category === 'READING').length;
-
-     const listeningScore = questions.filter(q => q.category === 'LISTENING' && q.questionType !== 'ESSAY' && answers[q.id] === q.correctAnswer).length;
-     const structureScore = questions.filter(q => q.category === 'STRUCTURE' && q.questionType !== 'ESSAY' && answers[q.id] === q.correctAnswer).length;
-     const readingScore = questions.filter(q => q.category === 'READING' && q.questionType !== 'ESSAY' && answers[q.id] === q.correctAnswer).length;
-
-     const totalQ = questions.filter(q => q.questionType !== 'ESSAY').length || 1; 
-     const predictionScore = Math.round(((score / totalQ) * 500) + 200);
-
      return (
         <div className="min-h-screen bg-slate-100 py-10 px-4 flex flex-col items-center justify-center font-sans">
              <div ref={certificateRef} style={{ backgroundColor: '#ffffff' }} className="p-10 w-full max-w-3xl shadow-2xl rounded-xl border-4 border-double border-slate-200 relative overflow-hidden text-slate-900">
@@ -195,43 +234,49 @@ export default function TestPage() {
                             <p className="text-xl font-bold text-slate-900">{new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
                         </div>
                     </div>
+                    
+                    {/* TABEL NILAI DETAIL */}
                     <div className="bg-slate-50 rounded-xl border border-slate-200 p-6 mb-8">
                         <table className="w-full text-left">
                             <thead>
                                 <tr className="border-b border-slate-200 text-slate-500 text-xs uppercase">
                                     <th className="pb-3 font-bold">Section</th>
-                                    <th className="pb-3 font-bold text-right">Correct Answers</th>
-                                    <th className="pb-3 font-bold text-right">Converted Score (Est)</th>
+                                    <th className="pb-3 font-bold text-right">Raw Score (Benar)</th>
+                                    <th className="pb-3 font-bold text-right">Converted Score</th>
                                 </tr>
                             </thead>
                             <tbody className="text-slate-800">
                                 <tr className="border-b border-slate-100">
                                     <td className="py-3 font-medium">Listening Comprehension</td>
-                                    <td className="py-3 text-right font-mono">{listeningScore} / {listeningCount}</td>
-                                    <td className="py-3 text-right font-bold">{Math.round((listeningScore / (listeningCount || 1)) * 68)}</td>
+                                    {/* Menggunakan sectionScores dari hasil hitungan baru */}
+                                    <td className="py-3 text-right font-mono">{rawScores.listening}</td>
+                                    <td className="py-3 text-right font-bold text-blue-900">{sectionScores.listening}</td>
                                 </tr>
                                 <tr className="border-b border-slate-100">
                                     <td className="py-3 font-medium">Structure & Written Exp.</td>
-                                    <td className="py-3 text-right font-mono">{structureScore} / {structureCount}</td>
-                                    <td className="py-3 text-right font-bold">{Math.round((structureScore / (structureCount || 1)) * 68)}</td>
+                                    <td className="py-3 text-right font-mono">{rawScores.structure}</td>
+                                    <td className="py-3 text-right font-bold text-blue-900">{sectionScores.structure}</td>
                                 </tr>
                                 <tr>
                                     <td className="py-3 font-medium">Reading Comprehension</td>
-                                    <td className="py-3 text-right font-mono">{readingScore} / {readingCount}</td>
-                                    <td className="py-3 text-right font-bold">{Math.round((readingScore / (readingCount || 1)) * 67)}</td>
+                                    <td className="py-3 text-right font-mono">{rawScores.reading}</td>
+                                    <td className="py-3 text-right font-bold text-blue-900">{sectionScores.reading}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+
+                    {/* TOTAL SCORE */}
                     <div className="flex justify-between items-center bg-slate-900 text-white p-6 rounded-xl shadow-lg">
                         <div>
                             <p className="text-slate-300 text-sm font-medium uppercase tracking-wider">Total Prediction Score</p>
-                            <p className="text-[10px] text-slate-400">*Based on raw conversion</p>
+                            <p className="text-[10px] text-slate-400">*Calculated using standard ITP conversion</p>
                         </div>
                         <div className="text-5xl font-black tracking-tighter">
-                            {predictionScore > 677 ? 677 : predictionScore}
+                            {finalScore > 677 ? 677 : finalScore}
                         </div>
                     </div>
+                    
                     <div className="mt-10 pt-6 border-t border-slate-200 flex justify-between items-end">
                        <div className="text-xs text-slate-400">
                           ID: {Math.random().toString(36).substr(2, 9).toUpperCase()}<br/>
@@ -256,7 +301,7 @@ export default function TestPage() {
      );
   }
 
-  // --- TAMPILAN SOAL UJIAN ---
+  // --- TAMPILAN SOAL UJIAN (DESAIN TETAP SAMA) ---
   const currentQ = questions[currentIdx];
   if (!currentQ) return <div>Soal tidak ditemukan.</div>;
   const progressPercent = ((currentIdx + 1) / questions.length) * 100;
