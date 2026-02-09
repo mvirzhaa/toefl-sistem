@@ -12,6 +12,7 @@ type Question = {
   questionType: string; // 'CHOICE' | 'ESSAY'
   correctAnswer: string;
   imageUrl?: string | null;
+  audioUrl?: string | null;
 };
 
 export default function AdminDashboard() {
