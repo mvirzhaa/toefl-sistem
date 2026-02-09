@@ -965,6 +965,8 @@ export namespace Prisma {
   export type QuestionMinAggregateOutputType = {
     id: string | null
     type: string | null
+    questionType: string | null
+    imageUrl: string | null
     category: string | null
     questionText: string | null
     audioUrl: string | null
@@ -975,6 +977,8 @@ export namespace Prisma {
   export type QuestionMaxAggregateOutputType = {
     id: string | null
     type: string | null
+    questionType: string | null
+    imageUrl: string | null
     category: string | null
     questionText: string | null
     audioUrl: string | null
@@ -985,6 +989,8 @@ export namespace Prisma {
   export type QuestionCountAggregateOutputType = {
     id: number
     type: number
+    questionType: number
+    imageUrl: number
     category: number
     questionText: number
     audioUrl: number
@@ -998,6 +1004,8 @@ export namespace Prisma {
   export type QuestionMinAggregateInputType = {
     id?: true
     type?: true
+    questionType?: true
+    imageUrl?: true
     category?: true
     questionText?: true
     audioUrl?: true
@@ -1008,6 +1016,8 @@ export namespace Prisma {
   export type QuestionMaxAggregateInputType = {
     id?: true
     type?: true
+    questionType?: true
+    imageUrl?: true
     category?: true
     questionText?: true
     audioUrl?: true
@@ -1018,6 +1028,8 @@ export namespace Prisma {
   export type QuestionCountAggregateInputType = {
     id?: true
     type?: true
+    questionType?: true
+    imageUrl?: true
     category?: true
     questionText?: true
     audioUrl?: true
@@ -1102,10 +1114,12 @@ export namespace Prisma {
   export type QuestionGroupByOutputType = {
     id: string
     type: string
+    questionType: string
+    imageUrl: string | null
     category: string
     questionText: string
     audioUrl: string | null
-    options: JsonValue | null
+    options: string[]
     correctAnswer: string
     createdAt: Date
     _count: QuestionCountAggregateOutputType | null
@@ -1130,6 +1144,8 @@ export namespace Prisma {
   export type QuestionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
+    questionType?: boolean
+    imageUrl?: boolean
     category?: boolean
     questionText?: boolean
     audioUrl?: boolean
@@ -1141,6 +1157,8 @@ export namespace Prisma {
   export type QuestionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
+    questionType?: boolean
+    imageUrl?: boolean
     category?: boolean
     questionText?: boolean
     audioUrl?: boolean
@@ -1152,6 +1170,8 @@ export namespace Prisma {
   export type QuestionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
+    questionType?: boolean
+    imageUrl?: boolean
     category?: boolean
     questionText?: boolean
     audioUrl?: boolean
@@ -1163,6 +1183,8 @@ export namespace Prisma {
   export type QuestionSelectScalar = {
     id?: boolean
     type?: boolean
+    questionType?: boolean
+    imageUrl?: boolean
     category?: boolean
     questionText?: boolean
     audioUrl?: boolean
@@ -1171,7 +1193,7 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type QuestionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "category" | "questionText" | "audioUrl" | "options" | "correctAnswer" | "createdAt", ExtArgs["result"]["question"]>
+  export type QuestionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "questionType" | "imageUrl" | "category" | "questionText" | "audioUrl" | "options" | "correctAnswer" | "createdAt", ExtArgs["result"]["question"]>
 
   export type $QuestionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Question"
@@ -1179,10 +1201,12 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       type: string
+      questionType: string
+      imageUrl: string | null
       category: string
       questionText: string
       audioUrl: string | null
-      options: Prisma.JsonValue | null
+      options: string[]
       correctAnswer: string
       createdAt: Date
     }, ExtArgs["result"]["question"]>
@@ -1610,10 +1634,12 @@ export namespace Prisma {
   interface QuestionFieldRefs {
     readonly id: FieldRef<"Question", 'String'>
     readonly type: FieldRef<"Question", 'String'>
+    readonly questionType: FieldRef<"Question", 'String'>
+    readonly imageUrl: FieldRef<"Question", 'String'>
     readonly category: FieldRef<"Question", 'String'>
     readonly questionText: FieldRef<"Question", 'String'>
     readonly audioUrl: FieldRef<"Question", 'String'>
-    readonly options: FieldRef<"Question", 'Json'>
+    readonly options: FieldRef<"Question", 'String[]'>
     readonly correctAnswer: FieldRef<"Question", 'String'>
     readonly createdAt: FieldRef<"Question", 'DateTime'>
   }
@@ -3067,6 +3093,8 @@ export namespace Prisma {
   export const QuestionScalarFieldEnum: {
     id: 'id',
     type: 'type',
+    questionType: 'questionType',
+    imageUrl: 'imageUrl',
     category: 'category',
     questionText: 'questionText',
     audioUrl: 'audioUrl',
@@ -3100,14 +3128,6 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-  export const NullableJsonNullValueInput: {
-    DbNull: typeof DbNull,
-    JsonNull: typeof JsonNull
-  };
-
-  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
-
-
   export const JsonNullValueInput: {
     JsonNull: typeof JsonNull
   };
@@ -3123,6 +3143,14 @@ export namespace Prisma {
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
   export const JsonNullValueFilter: {
     DbNull: typeof DbNull,
     JsonNull: typeof JsonNull,
@@ -3130,14 +3158,6 @@ export namespace Prisma {
   };
 
   export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
-
-
-  export const NullsOrder: {
-    first: 'first',
-    last: 'last'
-  };
-
-  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
   /**
@@ -3156,20 +3176,6 @@ export namespace Prisma {
    * Reference to a field of type 'String[]'
    */
   export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Json'
-   */
-  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-  /**
-   * Reference to a field of type 'QueryMode'
-   */
-  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -3202,6 +3208,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -3224,10 +3244,12 @@ export namespace Prisma {
     NOT?: QuestionWhereInput | QuestionWhereInput[]
     id?: StringFilter<"Question"> | string
     type?: StringFilter<"Question"> | string
+    questionType?: StringFilter<"Question"> | string
+    imageUrl?: StringNullableFilter<"Question"> | string | null
     category?: StringFilter<"Question"> | string
     questionText?: StringFilter<"Question"> | string
     audioUrl?: StringNullableFilter<"Question"> | string | null
-    options?: JsonNullableFilter<"Question">
+    options?: StringNullableListFilter<"Question">
     correctAnswer?: StringFilter<"Question"> | string
     createdAt?: DateTimeFilter<"Question"> | Date | string
   }
@@ -3235,10 +3257,12 @@ export namespace Prisma {
   export type QuestionOrderByWithRelationInput = {
     id?: SortOrder
     type?: SortOrder
+    questionType?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
     category?: SortOrder
     questionText?: SortOrder
     audioUrl?: SortOrderInput | SortOrder
-    options?: SortOrderInput | SortOrder
+    options?: SortOrder
     correctAnswer?: SortOrder
     createdAt?: SortOrder
   }
@@ -3249,10 +3273,12 @@ export namespace Prisma {
     OR?: QuestionWhereInput[]
     NOT?: QuestionWhereInput | QuestionWhereInput[]
     type?: StringFilter<"Question"> | string
+    questionType?: StringFilter<"Question"> | string
+    imageUrl?: StringNullableFilter<"Question"> | string | null
     category?: StringFilter<"Question"> | string
     questionText?: StringFilter<"Question"> | string
     audioUrl?: StringNullableFilter<"Question"> | string | null
-    options?: JsonNullableFilter<"Question">
+    options?: StringNullableListFilter<"Question">
     correctAnswer?: StringFilter<"Question"> | string
     createdAt?: DateTimeFilter<"Question"> | Date | string
   }, "id">
@@ -3260,10 +3286,12 @@ export namespace Prisma {
   export type QuestionOrderByWithAggregationInput = {
     id?: SortOrder
     type?: SortOrder
+    questionType?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
     category?: SortOrder
     questionText?: SortOrder
     audioUrl?: SortOrderInput | SortOrder
-    options?: SortOrderInput | SortOrder
+    options?: SortOrder
     correctAnswer?: SortOrder
     createdAt?: SortOrder
     _count?: QuestionCountOrderByAggregateInput
@@ -3277,10 +3305,12 @@ export namespace Prisma {
     NOT?: QuestionScalarWhereWithAggregatesInput | QuestionScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Question"> | string
     type?: StringWithAggregatesFilter<"Question"> | string
+    questionType?: StringWithAggregatesFilter<"Question"> | string
+    imageUrl?: StringNullableWithAggregatesFilter<"Question"> | string | null
     category?: StringWithAggregatesFilter<"Question"> | string
     questionText?: StringWithAggregatesFilter<"Question"> | string
     audioUrl?: StringNullableWithAggregatesFilter<"Question"> | string | null
-    options?: JsonNullableWithAggregatesFilter<"Question">
+    options?: StringNullableListFilter<"Question">
     correctAnswer?: StringWithAggregatesFilter<"Question"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Question"> | Date | string
   }
@@ -3356,22 +3386,26 @@ export namespace Prisma {
 
   export type QuestionCreateInput = {
     id?: string
-    type: string
+    type?: string
+    questionType?: string
+    imageUrl?: string | null
     category: string
     questionText: string
     audioUrl?: string | null
-    options?: NullableJsonNullValueInput | InputJsonValue
+    options?: QuestionCreateoptionsInput | string[]
     correctAnswer: string
     createdAt?: Date | string
   }
 
   export type QuestionUncheckedCreateInput = {
     id?: string
-    type: string
+    type?: string
+    questionType?: string
+    imageUrl?: string | null
     category: string
     questionText: string
     audioUrl?: string | null
-    options?: NullableJsonNullValueInput | InputJsonValue
+    options?: QuestionCreateoptionsInput | string[]
     correctAnswer: string
     createdAt?: Date | string
   }
@@ -3379,10 +3413,12 @@ export namespace Prisma {
   export type QuestionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    questionType?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
     questionText?: StringFieldUpdateOperationsInput | string
     audioUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    options?: NullableJsonNullValueInput | InputJsonValue
+    options?: QuestionUpdateoptionsInput | string[]
     correctAnswer?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3390,21 +3426,25 @@ export namespace Prisma {
   export type QuestionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    questionType?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
     questionText?: StringFieldUpdateOperationsInput | string
     audioUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    options?: NullableJsonNullValueInput | InputJsonValue
+    options?: QuestionUpdateoptionsInput | string[]
     correctAnswer?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type QuestionCreateManyInput = {
     id?: string
-    type: string
+    type?: string
+    questionType?: string
+    imageUrl?: string | null
     category: string
     questionText: string
     audioUrl?: string | null
-    options?: NullableJsonNullValueInput | InputJsonValue
+    options?: QuestionCreateoptionsInput | string[]
     correctAnswer: string
     createdAt?: Date | string
   }
@@ -3412,10 +3452,12 @@ export namespace Prisma {
   export type QuestionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    questionType?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
     questionText?: StringFieldUpdateOperationsInput | string
     audioUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    options?: NullableJsonNullValueInput | InputJsonValue
+    options?: QuestionUpdateoptionsInput | string[]
     correctAnswer?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3423,10 +3465,12 @@ export namespace Prisma {
   export type QuestionUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    questionType?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
     questionText?: StringFieldUpdateOperationsInput | string
     audioUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    options?: NullableJsonNullValueInput | InputJsonValue
+    options?: QuestionUpdateoptionsInput | string[]
     correctAnswer?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3537,28 +3581,13 @@ export namespace Prisma {
     mode?: QueryMode
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
-  export type JsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
 
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
@@ -3580,6 +3609,8 @@ export namespace Prisma {
   export type QuestionCountOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
+    questionType?: SortOrder
+    imageUrl?: SortOrder
     category?: SortOrder
     questionText?: SortOrder
     audioUrl?: SortOrder
@@ -3591,6 +3622,8 @@ export namespace Prisma {
   export type QuestionMaxOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
+    questionType?: SortOrder
+    imageUrl?: SortOrder
     category?: SortOrder
     questionText?: SortOrder
     audioUrl?: SortOrder
@@ -3601,6 +3634,8 @@ export namespace Prisma {
   export type QuestionMinOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
+    questionType?: SortOrder
+    imageUrl?: SortOrder
     category?: SortOrder
     questionText?: SortOrder
     audioUrl?: SortOrder
@@ -3642,32 +3677,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -3801,12 +3810,21 @@ export namespace Prisma {
     _max?: NestedJsonFilter<$PrismaModel>
   }
 
+  export type QuestionCreateoptionsInput = {
+    set: string[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type QuestionUpdateoptionsInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -3914,29 +3932,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-  export type NestedJsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {

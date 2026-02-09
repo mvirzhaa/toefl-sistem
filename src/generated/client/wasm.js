@@ -96,6 +96,8 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.QuestionScalarFieldEnum = {
   id: 'id',
   type: 'type',
+  questionType: 'questionType',
+  imageUrl: 'imageUrl',
   category: 'category',
   questionText: 'questionText',
   audioUrl: 'audioUrl',
@@ -120,11 +122,6 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.NullableJsonNullValueInput = {
-  DbNull: Prisma.DbNull,
-  JsonNull: Prisma.JsonNull
-};
-
 exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
@@ -134,15 +131,15 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 exports.Prisma.JsonNullValueFilter = {
   DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull,
   AnyNull: Prisma.AnyNull
-};
-
-exports.Prisma.NullsOrder = {
-  first: 'first',
-  last: 'last'
 };
 
 
@@ -189,7 +186,6 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -198,13 +194,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// prisma/schema.prisma\n\ngenerator client {\n  provider = \"prisma-client-js\" // <--- INI YANG BENAR (Ada -js nya)\n  output   = \"../src/generated/client\" // Kita rapikan path-nya ke sini\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\n// Model Soal (Pastikan ini ada!)\nmodel Question {\n  id            String   @id @default(cuid())\n  type          String // \"MULTIPLE_CHOICE\"\n  category      String // \"STRUCTURE\", \"LISTENING\", dll\n  questionText  String\n  audioUrl      String?\n  options       Json? // Array pilihan jawaban\n  correctAnswer String\n  createdAt     DateTime @default(now())\n}\n\n// prisma/schema.prisma\n\n// ... model Question tetap sama ...\n\nmodel TestSession {\n  id    String @id @default(cuid())\n  // HAPUS: userId String\n  // GANTI DENGAN 3 BARIS INI:\n  name  String\n  email String\n  phone String\n\n  score     Int\n  totalQ    Int\n  answers   Json\n  createdAt DateTime @default(now())\n}\n",
-  "inlineSchemaHash": "07afe94698e7aae80a4483cc2dc8678aec7133335dfdd7df11d678e15ddea0de",
+  "inlineSchema": "// prisma/schema.prisma\n\ngenerator client {\n  provider = \"prisma-client-js\" // <--- INI YANG BENAR (Ada -js nya)\n  output   = \"../src/generated/client\" // Kita rapikan path-nya ke sini\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\n// Model Soal (Pastikan ini ada!)\nmodel Question {\n  id   String @id @default(cuid())\n  type String @default(\"MULTIPLE_CHOICE\") // Biarkan ini untuk kompatibilitas\n\n  // TAMBAHAN BARU\n  questionType String  @default(\"CHOICE\") // 'CHOICE' atau 'ESSAY'\n  imageUrl     String? @db.Text // Untuk simpan kode gambar (Base64)\n\n  category     String\n  questionText String\n  audioUrl     String?\n\n  // Opsi Jawaban (Tetap ada, kalau Esai nanti dikosongkan)\n  options       String[]\n  correctAnswer String\n\n  createdAt DateTime @default(now())\n}\n\n// Model lain biarkan saja...\n\n// prisma/schema.prisma\n\n// ... model Question tetap sama ...\n\nmodel TestSession {\n  id    String @id @default(cuid())\n  // HAPUS: userId String\n  // GANTI DENGAN 3 BARIS INI:\n  name  String\n  email String\n  phone String\n\n  score     Int\n  totalQ    Int\n  answers   Json\n  createdAt DateTime @default(now())\n}\n",
+  "inlineSchemaHash": "76555f9cc14c0d1986bdaeec1e6cd6dfb00d075b1def2428e0a5014339342496",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Question\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"questionText\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"audioUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"options\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"correctAnswer\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"TestSession\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"totalQ\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"answers\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Question\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"questionType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"imageUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"questionText\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"audioUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"options\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"correctAnswer\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"TestSession\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"totalQ\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"answers\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

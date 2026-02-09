@@ -13,14 +13,24 @@ datasource db {
 // Model Soal (Pastikan ini ada!)
 model Question {
   id            String   @id @default(cuid())
-  type          String   // "MULTIPLE_CHOICE"
-  category      String   // "STRUCTURE", "LISTENING", dll
+  type          String   @default("MULTIPLE_CHOICE") // Biarkan ini untuk kompatibilitas
+  
+  // TAMBAHAN BARU
+  questionType  String   @default("CHOICE") // 'CHOICE' atau 'ESSAY'
+  imageUrl      String?  @db.Text // Untuk simpan kode gambar (Base64)
+  
+  category      String
   questionText  String
   audioUrl      String?
-  options       Json?    // Array pilihan jawaban
+  
+  // Opsi Jawaban (Tetap ada, kalau Esai nanti dikosongkan)
+  options       String[]
   correctAnswer String
+  
   createdAt     DateTime @default(now())
 }
+
+// Model lain biarkan saja...
 
 // prisma/schema.prisma
 
