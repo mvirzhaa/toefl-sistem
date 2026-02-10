@@ -3,13 +3,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { 
   Clock, Volume2, ChevronRight, ChevronLeft, 
-  CheckCircle, LayoutGrid, Flag, Download, Home, GraduationCap 
+  CheckCircle, LayoutGrid, Flag, Download, Home, GraduationCap, Play, Pause 
 } from 'lucide-react';
 import jsPDF from 'jspdf';
 import { toPng } from 'html-to-image';
 
 // --- 1. TABEL KONVERSI TOEFL ITP (STANDAR ETS) ---
-// Format: [Raw Score]: Scaled Score
 const LISTENING_CONVERSION: Record<number, number> = {
   50:68, 49:67, 48:66, 47:65, 46:63, 45:62, 44:61, 43:60, 42:59, 41:58, 40:57,
   39:57, 38:56, 37:55, 36:54, 35:54, 34:53, 33:52, 32:52, 31:51, 30:51,
@@ -33,6 +32,13 @@ const READING_CONVERSION: Record<number, number> = {
   9:28, 8:28, 7:27, 6:26, 5:25, 4:24, 3:23, 2:23, 1:22, 0:21
 };
 
+// --- HELPER: DETEKSI ID YOUTUBE ---
+const getYouTubeID = (url: string) => {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+};
+
 type Question = {
   id: string;
   questionType?: string;
@@ -49,18 +55,18 @@ export default function TestPage() {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({}); 
   const [flags, setFlags] = useState<Record<string, boolean>>({}); 
-  
-  // Waktu default 0, nanti diisi dari database settings
   const [timeLeft, setTimeLeft] = useState(0); 
-  
   const [loading, setLoading] = useState(true);
   const [isFinished, setIsFinished] = useState(false);
   
-  // STATE HASIL SCORE (Diganti logicnya)
+  // STATE HASIL SCORE
   const [finalScore, setFinalScore] = useState(0);
-  const [sectionScores, setSectionScores] = useState({ listening: 0, structure: 0, reading: 0 }); // Nilai Konversi
-  const [rawScores, setRawScores] = useState({ listening: 0, structure: 0, reading: 0 }); // Jumlah Benar
+  const [sectionScores, setSectionScores] = useState({ listening: 0, structure: 0, reading: 0 });
+  const [rawScores, setRawScores] = useState({ listening: 0, structure: 0, reading: 0 });
   
+  // STATE UNTUK AUDIO PLAYER CUSTOM (YOUTUBE)
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+
   const [showSidebar, setShowSidebar] = useState(true); 
   const [userData, setUserData] = useState({ name: '', email: '', phone: '' });
   const certificateRef = useRef<HTMLDivElement>(null); 
@@ -69,19 +75,14 @@ export default function TestPage() {
   useEffect(() => {
     async function initTest() {
       try {
-        // Ambil Soal
         const resQ = await fetch('/api/test');
         const dataQ: Question[] = await resQ.json();
-        
-        // Ambil Durasi dari Settings
         const resS = await fetch('/api/settings');
         const dataS = await resS.json();
         
-        // Set Waktu (Menit -> Detik)
         const durationInSeconds = (dataS.duration || 120) * 60;
         setTimeLeft(durationInSeconds);
 
-        // Shuffle Soal
         const shuffle = (arr: any[]) => arr.sort(() => Math.random() - 0.5);
         const listening = shuffle(dataQ.filter(q => q.category === 'LISTENING'));
         const structure = shuffle(dataQ.filter(q => q.category === 'STRUCTURE'));
@@ -110,6 +111,11 @@ export default function TestPage() {
     return () => clearInterval(timer);
   }, [loading, isFinished]);
 
+  // RESET STATUS AUDIO KETIKA PINDAH SOAL
+  useEffect(() => {
+    setIsPlayingAudio(false);
+  }, [currentIdx]);
+
   const formatTime = (seconds: number) => {
     const h = Math.floor(seconds / 3600);
     const m = Math.floor((seconds % 3600) / 60);
@@ -122,42 +128,29 @@ export default function TestPage() {
     setAnswers({ ...answers, [questions[currentIdx].id]: val });
   };
 
-  // --- LOGIKA HITUNG SKOR BARU (TOEFL STANDARD) ---
   const calculateSectionScore = (category: string, conversionTable: Record<number, number>, maxQuestions: number) => {
-    // 1. Ambil soal berdasarkan kategori (hanya Pilihan Ganda)
     const sectionQuestions = questions.filter(q => q.category === category && q.questionType !== 'ESSAY');
     const totalQ = sectionQuestions.length;
-    
-    // 2. Hitung jawaban benar (Raw Score)
     const correctCount = sectionQuestions.filter(q => answers[q.id] === q.correctAnswer).length;
 
-    // 3. PROYEKSI (Jika soal < standar TOEFL, kita proyeksikan)
-    // Contoh: Soal cuma 10, Benar 8. Maka proyeksi ke 50 soal = (8/10)*50 = 40.
     let projectedRaw = correctCount;
     if (totalQ > 0 && totalQ < maxQuestions) {
         projectedRaw = Math.round((correctCount / totalQ) * maxQuestions);
     }
     
-    // 4. Konversi menggunakan tabel
-    // Pastikan tidak melebihi max key di tabel
     const lookupKey = projectedRaw > maxQuestions ? maxQuestions : projectedRaw;
-    // Fallback ke nilai 0 jika key tidak ditemukan
     const convertedScore = conversionTable[lookupKey] || conversionTable[0] || 20;
 
     return { raw: correctCount, total: totalQ, converted: convertedScore };
   };
 
   const finishTest = async () => {
-    // Hitung per sesi menggunakan helper function di atas
-    // Listening Max 50, Structure Max 40, Reading Max 50
     const listening = calculateSectionScore('LISTENING', LISTENING_CONVERSION, 50);
     const structure = calculateSectionScore('STRUCTURE', STRUCTURE_CONVERSION, 40);
     const reading = calculateSectionScore('READING', READING_CONVERSION, 50);
 
-    // Rumus TOEFL ITP: (L + S + R) * 10 / 3
     const totalScore = Math.floor(((listening.converted + structure.converted + reading.converted) * 10) / 3);
 
-    // Update State
     setRawScores({ listening: listening.raw, structure: structure.raw, reading: reading.raw });
     setSectionScores({ listening: listening.converted, structure: structure.converted, reading: reading.converted });
     setFinalScore(totalScore);
@@ -205,11 +198,10 @@ export default function TestPage() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
       <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
       <p className="text-slate-500 font-medium animate-pulse">Menyiapkan Ruang Ujian...</p>
-      <p className="text-xs text-slate-400 mt-2">Memuat konfigurasi & soal...</p>
     </div>
   );
 
-  // --- TAMPILAN HASIL (SERTIFIKAT LENGKAP) ---
+  // --- TAMPILAN HASIL (SERTIFIKAT) ---
   if (isFinished) {
      return (
         <div className="min-h-screen bg-slate-100 py-10 px-4 flex flex-col items-center justify-center font-sans">
@@ -235,7 +227,7 @@ export default function TestPage() {
                         </div>
                     </div>
                     
-                    {/* TABEL NILAI DETAIL */}
+                    {/* TABEL NILAI */}
                     <div className="bg-slate-50 rounded-xl border border-slate-200 p-6 mb-8">
                         <table className="w-full text-left">
                             <thead>
@@ -248,7 +240,6 @@ export default function TestPage() {
                             <tbody className="text-slate-800">
                                 <tr className="border-b border-slate-100">
                                     <td className="py-3 font-medium">Listening Comprehension</td>
-                                    {/* Menggunakan sectionScores dari hasil hitungan baru */}
                                     <td className="py-3 text-right font-mono">{rawScores.listening}</td>
                                     <td className="py-3 text-right font-bold text-blue-900">{sectionScores.listening}</td>
                                 </tr>
@@ -266,7 +257,6 @@ export default function TestPage() {
                         </table>
                     </div>
 
-                    {/* TOTAL SCORE */}
                     <div className="flex justify-between items-center bg-slate-900 text-white p-6 rounded-xl shadow-lg">
                         <div>
                             <p className="text-slate-300 text-sm font-medium uppercase tracking-wider">Total Prediction Score</p>
@@ -301,10 +291,12 @@ export default function TestPage() {
      );
   }
 
-  // --- TAMPILAN SOAL UJIAN (DESAIN TETAP SAMA) ---
+  // --- TAMPILAN SOAL UJIAN ---
   const currentQ = questions[currentIdx];
   if (!currentQ) return <div>Soal tidak ditemukan.</div>;
   const progressPercent = ((currentIdx + 1) / questions.length) * 100;
+  
+  const youtubeID = currentQ.audioUrl ? getYouTubeID(currentQ.audioUrl) : null;
 
   return (
     <div className="h-screen bg-slate-100 flex flex-col overflow-hidden font-sans">
@@ -334,11 +326,52 @@ export default function TestPage() {
               <button onClick={() => setFlags({...flags, [currentQ.id]: !flags[currentQ.id]})} className={`flex items-center gap-2 text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${flags[currentQ.id] ? 'bg-yellow-100 text-yellow-700' : 'text-slate-400 hover:bg-slate-100'}`}><Flag className="w-4 h-4" />{flags[currentQ.id] ? 'Ditandai' : 'Tandai Ragu'}</button>
             </div>
 
+            {/* --- AUDIO PLAYER (DIPERBAIKI: HANYA TOMBOL JIKA YOUTUBE) --- */}
             {currentQ.audioUrl && (
-              <div className="mb-8 p-1 bg-gradient-to-r from-slate-800 to-slate-900 rounded-2xl shadow-xl">
+              <div className="mb-8 p-1 bg-gradient-to-r from-slate-800 to-slate-900 rounded-2xl shadow-xl overflow-hidden">
                 <div className="bg-slate-900/50 backdrop-blur-sm p-6 rounded-xl flex flex-col items-center justify-center text-white border border-white/10">
                   <div className="flex items-center gap-3 mb-4 text-cyan-400"><Volume2 className="w-6 h-6 animate-pulse" /><span className="font-semibold tracking-wide text-sm">LISTENING SECTION</span></div>
-                  <audio controls className="w-full max-w-md h-10 accent-blue-500"><source src={currentQ.audioUrl} type="audio/mpeg" /></audio>
+                  
+                  {youtubeID ? (
+                    // MODE YOUTUBE: HANYA TAMPIL TOMBOL, IFRAME DI-HIDDEN
+                    <div className="w-full flex flex-col items-center gap-4">
+                        <div className="flex items-center gap-4">
+                            {!isPlayingAudio ? (
+                                <button 
+                                    onClick={() => setIsPlayingAudio(true)}
+                                    className="flex items-center gap-3 bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full font-bold transition-all shadow-lg hover:scale-105"
+                                >
+                                    <Play className="w-5 h-5 fill-current" /> Putar Audio Soal
+                                </button>
+                            ) : (
+                                <button 
+                                    onClick={() => setIsPlayingAudio(false)}
+                                    className="flex items-center gap-3 bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-full font-bold transition-all shadow-lg hover:scale-105"
+                                >
+                                    <Pause className="w-5 h-5 fill-current" /> Stop Audio
+                                </button>
+                            )}
+                        </div>
+                        <p className="text-xs text-slate-400 animate-pulse">
+                            {isPlayingAudio ? "Audio sedang diputar..." : "Klik tombol untuk memutar audio."}
+                        </p>
+
+                        {/* RAHASIA: Iframe 1x1 Pixel (Tak Terlihat) + Autoplay */}
+                        {isPlayingAudio && (
+                            <div className="w-[1px] h-[1px] overflow-hidden opacity-0 absolute">
+                                <iframe 
+                                    width="1" height="1" 
+                                    src={`https://www.youtube.com/embed/${youtubeID}?autoplay=1&rel=0&playsinline=1`} 
+                                    allow="autoplay"
+                                    title="Hidden Audio"
+                                ></iframe>
+                            </div>
+                        )}
+                    </div>
+                  ) : (
+                    // MODE MP3 BIASA
+                    <audio controls className="w-full max-w-md h-10 accent-blue-500"><source src={currentQ.audioUrl} type="audio/mpeg" /></audio>
+                  )}
                 </div>
               </div>
             )}
