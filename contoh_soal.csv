@@ -1,21 +1,141 @@
 category,questionText,optionA,optionB,optionC,optionD,correctAnswer,audioUrl
-LISTENING,"(Man): I heard you're moving to New York. (Woman): Yes, I got a job at a law firm there. (Narrator): What does the woman mean?",She is going to New York for a vacation.,She found a new job in New York.,She is studying law in New York.,She is visiting a law firm.,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/1.mp3
-LISTENING,"(Woman): The history exam was incredibly difficult, wasn't it? (Man): You can say that again! (Narrator): What does the man mean?",He wants the woman to repeat the question.,He thinks the exam was easy.,He agrees that the exam was hard.,He has taken the exam twice.,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/2.mp3
-LISTENING,"(Man): Are you going to the library now? (Woman): I would, but I have a dentist appointment at three. (Narrator): What will the woman probably do next?",Go to the library.,Go to the dentist.,Meet the man at three.,Study for an exam.,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/3.mp3
-LISTENING,"(Woman): I can't believe I forgot my wallet. (Man): Don't worry, I've got you covered for lunch. (Narrator): What does the man offer to do?",Pay for the woman's lunch.,Go back to get her wallet.,Lend her some money for rent.,Buy her a new wallet.,A,https://www2.mcdaniel.edu/english/esl/listening/mp3/4.mp3
-LISTENING,"(Man): How did you like the performance? (Woman): Ideally, it could have been shorter. (Narrator): What is the woman's opinion?",It was too short.,It was the perfect length.,It was too long.,It was ideal.,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/5.mp3
+LISTENING,"(Man): I am so tired of studying. (Woman): Why don't we take a break and grab some coffee? (Narrator): What does the woman suggest?",Going to sleep,Studying more,Drinking coffee,Cleaning the room,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/1.mp3
+LISTENING,"(Woman): Did you finish the report? (Man): Not yet, I need more time. (Narrator): What does the man mean?",He is finished,He needs help,He is almost done,He has not finished yet,D,https://www2.mcdaniel.edu/english/esl/listening/mp3/2.mp3
+LISTENING,"(Man): How was the movie? (Woman): It was a waste of time. (Narrator): What does the woman imply?",The movie was long,She didn't like it,She was late,It was a good movie,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/3.mp3
+LISTENING,"(Woman): Are you taking the bus? (Man): No, I think I'll walk today. The weather is nice. (Narrator): How will the man get to his destination?",By bus,By car,On foot,By train,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/4.mp3
+LISTENING,"(Man): I can't find my keys anywhere. (Woman): Did you check your coat pocket? (Narrator): What does the woman suggest?",Buying new keys,Looking in the pocket,Checking the car,Leaving the door open,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/5.mp3
+LISTENING,"(Woman): The professor cancelled class today. (Man): That's great! I can catch up on my reading. (Narrator): Why is the man happy?",He likes the professor,He has free time,He passed the test,He is going home,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/6.mp3
+LISTENING,"(Man): Do you have change for a dollar? (Woman): Sorry, I only have big bills. (Narrator): What does the woman mean?",She has no money,She cannot give change,She has many coins,She wants a dollar,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/7.mp3
+LISTENING,"(Woman): This soup is too salty. (Man): I told you not to add that much salt. (Narrator): What happened to the soup?",It is perfect,It has no flavor,It is too hot,It has too much salt,D,https://www2.mcdaniel.edu/english/esl/listening/mp3/8.mp3
+LISTENING,"(Man): When is the deadline? (Woman): It's due next Monday. (Narrator): When must the assignment be submitted?",Tomorrow,This Friday,Next Monday,Next Tuesday,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/9.mp3
+LISTENING,"(Woman): I think I'll wear the red dress. (Man): The blue one suits you better. (Narrator): What does the man prefer?",The red dress,The blue dress,The green dress,No dress,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/10.mp3
+LISTENING,"(Man): Is there a pharmacy nearby? (Woman): Yes, right across the street. (Narrator): Where is the pharmacy?",Far away,Across the street,Next door,In the next town,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/11.mp3
+LISTENING,"(Woman): Why are you whispering? (Man): Because we are in a library! (Narrator): Why is the man whispering?",He has a sore throat,It is a secret,They are in a quiet zone,He is shy,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/12.mp3
+LISTENING,"(Man): Can you help me lift this box? (Woman): Sure, it looks heavy. (Narrator): What will the woman do?",Watch the man,Help the man,Leave the room,Open the box,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/13.mp3
+LISTENING,"(Woman): I passed my driving test! (Man): Congratulations! (Narrator): What is the good news?",She bought a car,She passed the test,She got a job,She is moving,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/14.mp3
+LISTENING,"(Man): Do you want to go out for dinner? (Woman): I'd rather stay in and cook. (Narrator): What does the woman want to do?",Eat at a restaurant,Cook at home,Order delivery,Skip dinner,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/15.mp3
+LISTENING,"(Woman): Have you seen my glasses? (Man): They are on your head. (Narrator): Where are the glasses?",On the table,In the case,On her head,Lost forever,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/16.mp3
+LISTENING,"(Man): It's raining cats and dogs! (Woman): We better stay inside. (Narrator): What does the man mean?",Animals are falling,It is raining heavily,It is a sunny day,He likes cats,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/17.mp3
+LISTENING,"(Woman): I'm sorry I'm late. Traffic was terrible. (Man): No problem, the meeting hasn't started yet. (Narrator): Why was the woman late?",She overslept,Bad traffic,Car trouble,She got lost,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/18.mp3
+LISTENING,"(Man): This computer is so slow. (Woman): Maybe it has a virus. (Narrator): What is the problem?",The computer is broken,The internet is fast,The computer is slow,The screen is black,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/19.mp3
+LISTENING,"(Woman): Do you like jazz? (Man): It's not my cup of tea. (Narrator): How does the man feel about jazz?",He loves it,He hates it,He doesn't like it,He plays it,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/20.mp3
+LISTENING,"(Man): I need to renew my passport. (Woman): You should do it before your trip. (Narrator): What does the man need to do?",Buy a ticket,Renew his passport,Pack his bags,Call the embassy,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/21.mp3
+LISTENING,"(Woman): Who is that man over there? (Man): That's the new CEO. (Narrator): Who are they talking about?",The janitor,The new CEO,A client,A waiter,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/22.mp3
+LISTENING,"(Man): I'm starving. (Woman): Let's grab a bite to eat. (Narrator): What does the man mean?",He is thirsty,He is very hungry,He is tired,He is angry,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/23.mp3
+LISTENING,"(Woman): Did you hear the news? (Man): No, what happened? (Narrator): What does the man want to know?",The time,The news,The weather,The score,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/24.mp3
+LISTENING,"(Man): Can I borrow a pen? (Woman): Sorry, I only have one. (Narrator): Does the woman lend the pen?",Yes,No,Maybe,Later,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/25.mp3
+LISTENING,"(Woman): It's freezing in here. (Man): I'll close the window. (Narrator): Why is the woman cold?",The AC is on,The window is open,She is sick,It is winter,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/26.mp3
+LISTENING,"(Man): Have you finished the book? (Woman): I'm only halfway through. (Narrator): How much has the woman read?",All of it,None of it,Half of it,Just the beginning,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/27.mp3
+LISTENING,"(Woman): What time is your flight? (Man): It leaves at six. (Narrator): When does the flight depart?",At five,At six,At seven,At eight,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/28.mp3
+LISTENING,"(Man): I bought a new car. (Woman): Wow, what color is it? (Narrator): What does the woman ask?",The price,The brand,The color,The speed,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/29.mp3
+LISTENING,"(Woman): Are you ready to order? (Man): I think I'll have the steak. (Narrator): Where does this conversation take place?",In a library,In a restaurant,In a park,In a bank,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/30.mp3
+LISTENING,"(Narrator): Listen to a conversation about a field trip. (Woman): The geology trip is this Saturday. (Man): Do we need to bring anything? (Woman): Just sturdy shoes and a notebook. (Man): What about lunch? (Woman): We'll stop at a diner. (Narrator): What do the students need to bring?",Lunch,Money,Shoes and notebook,A camera,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/31.mp3
+LISTENING,"(Narrator): What is the main topic of the conversation?",A biology class,A geology trip,A history exam,A hiking club,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/32.mp3
+LISTENING,"(Narrator): When is the trip taking place?",On Friday,On Saturday,On Sunday,Next week,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/33.mp3
+LISTENING,"(Narrator): Where will they eat lunch?",At school,At a diner,In the bus,On the mountain,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/34.mp3
+LISTENING,"(Narrator): Listen to a part of a lecture in a history class. (Speaker): The Industrial Revolution began in Britain in the late 1700s. It marked a major turning point in history. Hand production methods were replaced by machines. (Narrator): What is the lecture mainly about?",The French Revolution,The Industrial Revolution,Modern Technology,British Royalty,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/35.mp3
+LISTENING,"(Narrator): According to the speaker, where did it begin?",In America,In France,In Britain,In Germany,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/36.mp3
+LISTENING,"(Narrator): What replaced hand production methods?",Computers,Robots,Machines,Animals,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/37.mp3
+LISTENING,"(Narrator): When did it begin?",Late 1600s,Early 1700s,Late 1700s,Early 1800s,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/38.mp3
+LISTENING,"(Narrator): Listen to a conversation between a student and a librarian. (Student): I'm looking for books on marine biology. (Librarian): Those are in the science section, aisle 4. (Student): Can I check them out for two weeks? (Librarian): Yes, provided you have your student ID. (Narrator): What is the student looking for?",History books,Marine biology books,Novels,Magazines,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/39.mp3
+LISTENING,"(Narrator): Where does the librarian direct the student?",Aisle 1,Aisle 2,Aisle 4,Aisle 10,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/40.mp3
+LISTENING,"(Narrator): What does the student need to check out books?",Money,Driver's license,Student ID,Permission slip,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/41.mp3
+LISTENING,"(Narrator): How long can the student keep the books?",One week,Two weeks,Three weeks,One month,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/42.mp3
+LISTENING,"(Narrator): Listen to a talk about honeybees. (Speaker): Honeybees are fascinating insects. They live in colonies with a single queen. Worker bees do all the work, from gathering nectar to defending the hive. Drones exist only to mate. (Narrator): What is the main topic?",Ants,Wasps,Honeybees,Butterflies,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/43.mp3
+LISTENING,"(Narrator): How many queens are in a colony?",One,Two,Many,None,A,https://www2.mcdaniel.edu/english/esl/listening/mp3/44.mp3
+LISTENING,"(Narrator): What is the function of the drone?",To work,To gather nectar,To mate,To defend,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/45.mp3
+LISTENING,"(Narrator): Who does all the work in the hive?",The queen,The drones,The worker bees,The keeper,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/46.mp3
+LISTENING,"(Narrator): Listen to a conversation about a lost item. (Woman): I can't find my phone. (Man): Did you have it on the bus? (Woman): Yes, I was texting. (Man): Maybe it fell out of your pocket. (Narrator): What did the woman lose?",Her wallet,Her keys,Her phone,Her bag,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/47.mp3
+LISTENING,"(Narrator): Where was she last using it?",In the car,On the bus,At home,At school,B,https://www2.mcdaniel.edu/english/esl/listening/mp3/48.mp3
+LISTENING,"(Narrator): What was she doing with it?",Calling,Playing games,Texting,Taking photos,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/49.mp3
+LISTENING,"(Narrator): What does the man suggest happened?",It was stolen,She left it at home,It fell out of her pocket,She sold it,C,https://www2.mcdaniel.edu/english/esl/listening/mp3/50.mp3
 STRUCTURE,The North Platte River ______ from Wyoming into Nebraska.,it flowed,flows,flowing,with flowing,B,
 STRUCTURE,______ Biloxi received its name from a Sioux word meaning "first people.",The city of,Located in,It is in,The tour included,A,
 STRUCTURE,A pride of lions ______ up to forty lions, including one to three males, several females, and cubs.,can contain,it contains,contain,containing,A,
-STRUCTURE,The tea plant, ______ small and white flowers, is an evergreen shrub.,which has,has,having,to have,A,
+STRUCTURE,______ tea plant are small and white.,The,On the,Having flowers the,The flowers of the,D,
+STRUCTURE,The tetracyclines, ______ antibiotics, are used to treat infections.,are a family of,being a family,a family of,their family is,C,
+STRUCTURE,Any possible academic assistance from taking stimulants ______ marginal at best.,it is,there is,is,as,C,
+STRUCTURE,Henry Adams, born in Boston, ______ famous as a historian and novelist.,became,and became,he was,and he became,A,
+STRUCTURE,The major cause ______ the pull of the Moon on the Earth.,the ocean tides are,of ocean tides is,of the tides in the ocean,the oceans' tides,B,
+STRUCTURE,Still a novelty in the late nineteenth century, ______ limited to the rich.,was photography,photography was,it was photography,when photography,B,
+STRUCTURE,A computerized map of the freeways using information gathered by sensors embedded in the pavement ______ on a local cable channel during rush hours.,airs,airing,air,to air,A,
 STRUCTURE,Unlike most birds, ______ the ability to fly.,penguins do not have,penguins are not,penguins that do not have,not having penguins,A,
+STRUCTURE,The knee is the joint ______ the thigh bone meets the large bone of the lower leg.,when,where,why,which,B,
+STRUCTURE,To generate energy, wind turbines need ______ wind.,steady,a steady,steadiness,steadying,B,
+STRUCTURE,______ vastness of the Grand Canyon, it is difficult to capture it in a single photograph.,Because of the,The,For the,Because the,A,
+STRUCTURE,Civil engineers had to decide ______ to build the bridge.,what,where,which,when,B,
+STRUCTURE,"The (A) *grizzly* bear, (B) *which* can grow (C) *up to* eight feet tall, has (D) *been* called a dangerous animal.",grizzly,which,up to,been,D,
+STRUCTURE,"(A) *Despite* of the rain, the (B) *baseball* game (C) *was* not (D) *cancelled*.",Despite,baseball,was,cancelled,A,
 STRUCTURE,"The (A) *huge* increase in (B) *tourist* have had a (C) *positive* economic effect on the (D) *local* business.",huge,tourist,positive,local,B,
 STRUCTURE,"Waitresses (A) *usually* receive (B) *tips* from their customers, (C) *which* constitute a major part of (D) *her* income.",usually,tips,which,her,D,
 STRUCTURE,"Guppies are (A) *sometimes* call (B) *rainbow* fish (C) *because* of the (D) *males'* bright colors.",sometimes,rainbow,because,males',A,
-STRUCTURE,"The (A) *grizzly* bear, (B) *which* can grow (C) *up to* eight feet tall, has (D) *been* called a dangerous animal.",grizzly,which,up to,been,D,
-STRUCTURE,"(A) *Despite* of the rain, the (B) *baseball* game (C) *was* not (D) *cancelled*.",Despite,baseball,was,cancelled,A,
-READING,"The passage mainly discusses...",The migration of monarch butterflies,The life cycle of insects,The geography of Mexico,The danger of extinction,A,
-READING,"The word 'swarms' in line 3 is closest in meaning to...",Small groups,Large crowds,Flight patterns,Solo travelers,B,
-READING,"According to the passage, where do monarch butterflies spend the winter?",In Canada,In the United States,In Central Mexico,In South America,C,
-READING,"It can be inferred from the passage that monarch butterflies...",Are unable to fly long distances,Prefer cold climates,Travel in groups for safety,Migrate to breed in the south,D,
-READING,"The word 'perilous' in line 10 could best be replaced by...",Safe,Dangerous,Easy,Long,B,
+STRUCTURE,"The (A) *invention* of the (B) *silicon* chip (C) *have* revolutionized the (D) *computer* industry.",invention,silicon,have,computer,C,
+STRUCTURE,"(A) *Whatever* the weather (B) *is*, the (C) *game* will (D) *go* on.",Whatever,is,game,go,A,
+STRUCTURE,"The (A) *police* (B) *is* investigating the (C) *mysterious* (D) *disappearance*.",police,is,mysterious,disappearance,B,
+STRUCTURE,"(A) *There* are (B) *many* different (C) *types* of (D) *cloud*.",There,many,types,cloud,D,
+STRUCTURE,"The (A) *amount* of (B) *people* at the (C) *concert* was (D) *surprising*.",amount,people,concert,surprising,A,
+STRUCTURE,"She (A) *has* lived (B) *in* Chicago (C) *since* (D) *five* years.",has,in,since,five,C,
+STRUCTURE,"(A) *Each* of the (B) *student* must (C) *submit* their (D) *homework*.",Each,student,submit,homework,B,
+STRUCTURE,"The (A) *dog* wagged (B) *it's* tail (C) *when* it saw (D) *the* bone.",dog,it's,when,the,B,
+STRUCTURE,"(A) *Making* friends (B) *are* easier (C) *when* you share (D) *interests*.",Making,are,when,interests,B,
+STRUCTURE,"I (A) *wish* I (B) *was* a (C) *little* bit (D) *taller*.",wish,was,little,taller,B,
+STRUCTURE,"The (A) *results* of the (B) *study* (C) *was* published (D) *yesterday*.",results,study,was,yesterday,C,
+STRUCTURE,"(A) *Neither* the teacher (B) *nor* the students (C) *know* the (D) *answer*.",Neither,nor,know,answer,C,
+STRUCTURE,"The (A) *man* (B) *who* I met (C) *yesterday* is (D) *famous*.",man,who,yesterday,famous,B,
+STRUCTURE,"She (A) *enjoys* to (B) *read* books (C) *about* (D) *history*.",enjoys,read,about,history,B,
+STRUCTURE,"He (A) *is* the (B) *more* intelligent (C) *student* in the (D) *class*.",is,more,student,class,B,
+STRUCTURE,"The (A) *chairs* in the (B) *room* (C) *is* made of (D) *wood*.",chairs,room,is,wood,C,
+STRUCTURE,"(A) *Because* it was (B) *raining*, (C) *so* we stayed (D) *home*.",Because,raining,so,home,C,
+STRUCTURE,"I (A) *have* not (B) *saw* him (C) *since* last (D) *week*.",have,saw,since,week,B,
+STRUCTURE,"The (A) *news* (B) *were* bad, but (C) *we* remained (D) *hopeful*.",news,were,we,hopeful,B,
+STRUCTURE,"(A) *Buying* clothes (B) *are* often (C) *a* time-consuming (D) *activity*.",Buying,are,a,activity,B,
+READING,"The passage (Passage 1: Monarch Butterflies) mainly discusses...",The migration of monarch butterflies,The life cycle of insects,The geography of Mexico,The danger of extinction,A,
+READING,"(Passage 1) The word 'swarms' in line 3 is closest in meaning to...",Small groups,Large crowds,Flight patterns,Solo travelers,B,
+READING,"(Passage 1) According to the passage, where do monarch butterflies spend the winter?",In Canada,In the United States,In Central Mexico,In South America,C,
+READING,"(Passage 1) It can be inferred from the passage that monarch butterflies...",Are unable to fly long distances,Prefer cold climates,Travel in groups for safety,Migrate to breed in the south,D,
+READING,"(Passage 1) The word 'perilous' in line 10 could best be replaced by...",Safe,Dangerous,Easy,Long,B,
+READING,"(Passage 1) What is NOT mentioned as a threat to monarch butterflies?",Deforestation,Climate change,Pesticides,Predatory birds,D,
+READING,"(Passage 1) How long does the migration take?",One week,One month,Two months,It varies,C,
+READING,"(Passage 1) The phrase 'generation gap' in the text refers to...",The age difference between butterflies,The fact that different generations complete the cycle,A hole in the forest,A gap in knowledge,B,
+READING,"(Passage 1) Where does the migration start?",Mexico,California,Canada and US,South America,C,
+READING,"(Passage 1) What is the tone of the passage?",Critical,Informative,Humorous,Sarcastic,B,
+READING,"(Passage 2: The Solar System) What is the main topic of the passage?",The Sun,The Planets,The Solar System,Space Travel,C,
+READING,"(Passage 2) Which planet is closest to the Sun?",Venus,Earth,Mercury,Mars,C,
+READING,"(Passage 2) The word 'terrestrial' refers to planets that are...",Made of gas,Made of rock,Very large,Very far away,B,
+READING,"(Passage 2) According to the passage, which is the largest planet?",Saturn,Uranus,Jupiter,Neptune,C,
+READING,"(Passage 2) The 'Gas Giants' are characterized by...",Rocky surfaces,Thick atmospheres,Small size,Proximity to the sun,B,
+READING,"(Passage 2) Ideally, how old is the Solar System?",1 million years,4.6 billion years,10 billion years,100 years,B,
+READING,"(Passage 2) The word 'orbit' is closest in meaning to...",Spin,Path,Stop,Crash,B,
+READING,"(Passage 2) Which of the following is NOT a planet?",Pluto,Mars,Earth,Venus,A,
+READING,"(Passage 2) What separates the inner and outer planets?",The Moon,The Asteroid Belt,The Sun,Comets,B,
+READING,"(Passage 2) It can be inferred that life exists on...",Mercury,Jupiter,Earth,All planets,C,
+READING,"(Passage 3: History of Jazz) What is the passage mainly about?",Classical music,The origins of Jazz,Rock and Roll,Modern pop,B,
+READING,"(Passage 3) Where did Jazz originate?",New York,Chicago,New Orleans,Los Angeles,C,
+READING,"(Passage 3) The word 'improvisation' means...",Reading music,Creating music spontaneously,Memorizing songs,Copying others,B,
+READING,"(Passage 3) Who is mentioned as a famous Jazz musician?",Elvis Presley,Louis Armstrong,Mozart,The Beatles,B,
+READING,"(Passage 3) Jazz is a blend of...",Rock and Pop,European and African traditions,Country and Western,Classical and Opera,B,
+READING,"(Passage 3) The 'Roaring Twenties' refers to which decade?",1910s,1920s,1930s,1940s,B,
+READING,"(Passage 3) What instrument is commonly associated with Jazz?",Violin,Saxophone,Flute,Harp,B,
+READING,"(Passage 3) The word 'distinctive' is closest in meaning to...",Common,Unique,Boring,Quiet,B,
+READING,"(Passage 3) According to the passage, Jazz spread north via...",The Mississippi River,The Ocean,Airplanes,Highways,A,
+READING,"(Passage 3) Which style preceded Jazz?",Rock,Ragtime,Techno,Disco,B,
+READING,"(Passage 4: The Great Barrier Reef) The passage discusses...",A mountain range,A coral reef system,A desert,A forest,B,
+READING,"(Passage 4) Where is the Great Barrier Reef located?",Off the coast of Florida,Off the coast of Australia,In the Mediterranean,In the Atlantic,B,
+READING,"(Passage 4) The word 'diverse' in the text means...",Similar,Varied,Empty,Small,B,
+READING,"(Passage 4) Coral reefs are often called...",The deserts of the sea,The rainforests of the sea,The mountains of the sea,The clouds of the sea,B,
+READING,"(Passage 4) What is a major threat to the reef?",Snow,Bleaching,Darkness,Silence,B,
+READING,"(Passage 4) The reef is visible from...",The moon,Space,Mars,Underground,B,
+READING,"(Passage 4) How many species of fish live there?",Ten,Hundreds,Thousands,Millions,C,
+READING,"(Passage 4) The word 'habitat' means...",Home,Food,Enemy,Friend,A,
+READING,"(Passage 4) Tourism is described as...",Harmful only,Beneficial only,Both beneficial and harmful,Non-existent,C,
+READING,"(Passage 4) The author hopes that...",The reef will disappear,The reef will be protected,People stop swimming,Fish leave the reef,B,
+READING,"(Passage 5: The Invention of the Internet) The main topic is...",The radio,The telephone,The Internet,The television,C,
+READING,"(Passage 5) The Internet started as a project for...",The military,Schools,Hospitals,Banks,A,
+READING,"(Passage 5) What was the original name?",Netscape,ARPANET,Google,Wifi,B,
+READING,"(Passage 5) The word 'global' means...",Local,Worldwide,Small,Private,B,
+READING,"(Passage 5) Who is credited with inventing the World Wide Web?",Bill Gates,Steve Jobs,Tim Berners-Lee,Al Gore,C,
+READING,"(Passage 5) Email allows users to...",Watch movies,Send messages,Buy food,Travel,B,
+READING,"(Passage 5) The internet has revolutionized...",Nothing,Communication,Cooking,Sleeping,B,
+READING,"(Passage 5) The word 'accessible' means...",Hard to reach,Easy to reach,Expensive,Broken,B,
+READING,"(Passage 5) In the 1990s, the internet became...",Slower,Popular,Secret,Illegal,B,
+READING,"(Passage 5) The future of the internet is described as...",Uncertain but expanding,Ending soon,Boring, shrinking,A,

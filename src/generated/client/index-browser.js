@@ -152,6 +152,14 @@ exports.Prisma.SettingScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.VerificationTokenScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -181,7 +189,8 @@ exports.Prisma.JsonNullValueFilter = {
 exports.Prisma.ModelName = {
   Question: 'Question',
   TestSession: 'TestSession',
-  Setting: 'Setting'
+  Setting: 'Setting',
+  VerificationToken: 'VerificationToken'
 };
 
 /**

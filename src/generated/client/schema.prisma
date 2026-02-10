@@ -56,3 +56,11 @@ model Setting {
   value     String // Contoh: "120"
   updatedAt DateTime @updatedAt
 }
+
+model VerificationToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String // Kode 6 digit (misal: 123456)
+  expiresAt DateTime // Token kadaluarsa kapan
+  createdAt DateTime @default(now())
+}

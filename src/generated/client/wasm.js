@@ -124,6 +124,14 @@ exports.Prisma.SettingScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.VerificationTokenScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -153,7 +161,8 @@ exports.Prisma.JsonNullValueFilter = {
 exports.Prisma.ModelName = {
   Question: 'Question',
   TestSession: 'TestSession',
-  Setting: 'Setting'
+  Setting: 'Setting',
+  VerificationToken: 'VerificationToken'
 };
 /**
  * Create the Client
@@ -202,13 +211,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// prisma/schema.prisma\n\ngenerator client {\n  provider = \"prisma-client-js\" // <--- INI YANG BENAR (Ada -js nya)\n  output   = \"../src/generated/client\" // Kita rapikan path-nya ke sini\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\n// Model Soal (Pastikan ini ada!)\nmodel Question {\n  id   String @id @default(cuid())\n  type String @default(\"MULTIPLE_CHOICE\") // Biarkan ini untuk kompatibilitas\n\n  // TAMBAHAN BARU\n  questionType String  @default(\"CHOICE\") // 'CHOICE' atau 'ESSAY'\n  imageUrl     String? @db.Text // Untuk simpan kode gambar (Base64)\n\n  category     String\n  questionText String\n  audioUrl     String?\n\n  // Opsi Jawaban (Tetap ada, kalau Esai nanti dikosongkan)\n  options       String[]\n  correctAnswer String\n\n  createdAt DateTime @default(now())\n}\n\n// Model lain biarkan saja...\n\n// prisma/schema.prisma\n\n// ... model Question tetap sama ...\n\nmodel TestSession {\n  id    String @id @default(cuid())\n  // HAPUS: userId String\n  // GANTI DENGAN 3 BARIS INI:\n  name  String\n  email String\n  phone String\n\n  score     Int\n  totalQ    Int\n  answers   Json\n  createdAt DateTime @default(now())\n}\n\nmodel Setting {\n  id        String   @id @default(cuid())\n  key       String   @unique // Contoh: \"exam_duration\"\n  value     String // Contoh: \"120\"\n  updatedAt DateTime @updatedAt\n}\n",
-  "inlineSchemaHash": "28b39c877abca8ec36c027a05316692da30ca077b22048cdffa2d328a7bebc8f",
+  "inlineSchema": "// prisma/schema.prisma\n\ngenerator client {\n  provider = \"prisma-client-js\" // <--- INI YANG BENAR (Ada -js nya)\n  output   = \"../src/generated/client\" // Kita rapikan path-nya ke sini\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\n// Model Soal (Pastikan ini ada!)\nmodel Question {\n  id   String @id @default(cuid())\n  type String @default(\"MULTIPLE_CHOICE\") // Biarkan ini untuk kompatibilitas\n\n  // TAMBAHAN BARU\n  questionType String  @default(\"CHOICE\") // 'CHOICE' atau 'ESSAY'\n  imageUrl     String? @db.Text // Untuk simpan kode gambar (Base64)\n\n  category     String\n  questionText String\n  audioUrl     String?\n\n  // Opsi Jawaban (Tetap ada, kalau Esai nanti dikosongkan)\n  options       String[]\n  correctAnswer String\n\n  createdAt DateTime @default(now())\n}\n\n// Model lain biarkan saja...\n\n// prisma/schema.prisma\n\n// ... model Question tetap sama ...\n\nmodel TestSession {\n  id    String @id @default(cuid())\n  // HAPUS: userId String\n  // GANTI DENGAN 3 BARIS INI:\n  name  String\n  email String\n  phone String\n\n  score     Int\n  totalQ    Int\n  answers   Json\n  createdAt DateTime @default(now())\n}\n\nmodel Setting {\n  id        String   @id @default(cuid())\n  key       String   @unique // Contoh: \"exam_duration\"\n  value     String // Contoh: \"120\"\n  updatedAt DateTime @updatedAt\n}\n\nmodel VerificationToken {\n  id        String   @id @default(cuid())\n  email     String\n  token     String // Kode 6 digit (misal: 123456)\n  expiresAt DateTime // Token kadaluarsa kapan\n  createdAt DateTime @default(now())\n}\n",
+  "inlineSchemaHash": "34e0df6e0a220f035b89a99dac1a9d22c09e42bab154015da1fc058112924a01",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Question\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"questionType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"imageUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"questionText\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"audioUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"options\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"correctAnswer\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"TestSession\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"totalQ\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"answers\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Setting\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"key\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"value\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Question\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"questionType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"imageUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"questionText\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"audioUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"options\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"correctAnswer\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"TestSession\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"totalQ\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"answers\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Setting\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"key\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"value\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"VerificationToken\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),
