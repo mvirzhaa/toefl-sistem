@@ -22,9 +22,11 @@ export default function AdminLayout({
   // ----------------------------------------------------
 
   const menuItems = [
+    { name: 'Dashboard', href: '/admin/dashboard', icon: BarChart3 },
     { name: 'Bank Soal', href: '/admin', icon: FileQuestion },
     { name: 'Hasil Ujian', href: '/admin/results', icon: BarChart3 },
     { name: 'Pengaturan', href: '/admin/settings', icon: Settings },
+    
   ];
 
   return (

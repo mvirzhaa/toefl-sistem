@@ -2,7 +2,7 @@
 
 generator client {
   provider = "prisma-client-js"   // <--- INI YANG BENAR (Ada -js nya)
-  output   = "../src/generated/client" // Kita rapikan path-nya ke sini
+
 }
 
 datasource db {

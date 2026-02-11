@@ -24,3 +24,27 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@media print {
+  /* Sembunyikan Sidebar & Elemen yang tidak perlu saat nge-print */
+  aside, .sidebar, nav {
+    display: none !important;
+  }
+
+  /* Pastikan konten dashboard full width di kertas */
+  main, div {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Sembunyikan tombol filter/print itu sendiri */
+  button, input, select {
+    display: none !important;
+  }
+  
+  /* Latar belakang putih bersih */
+  body {
+    background-color: white !important;
+  }
+}
