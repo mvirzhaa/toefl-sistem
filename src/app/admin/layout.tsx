@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation'; // 1. Tambah useRouter
 import { 
   FileQuestion, BarChart3, Settings, LogOut, Menu, X, GraduationCap
 } from 'lucide-react';
@@ -14,6 +14,7 @@ export default function AdminLayout({
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname(); 
+  const router = useRouter(); // 2. Inisialisasi Router
 
   // --- PERBAIKAN: Gunakan startsWith agar lebih aman ---
   if (pathname && pathname.startsWith('/admin/login')) {
@@ -26,8 +27,12 @@ export default function AdminLayout({
     { name: 'Bank Soal', href: '/admin', icon: FileQuestion },
     { name: 'Hasil Ujian', href: '/admin/results', icon: BarChart3 },
     { name: 'Pengaturan', href: '/admin/settings', icon: Settings },
-    
   ];
+
+  const handleLogout = async () => {
+    // 3. Gunakan router.replace supaya user tidak bisa tekan tombol Back
+    router.replace('/admin/login');
+  }
 
   return (
     <div className="flex h-screen bg-slate-50 overflow-hidden font-sans">
@@ -62,7 +67,11 @@ export default function AdminLayout({
         </nav>
 
         <div className="p-4 border-t border-slate-800 bg-slate-950">
-          <button className="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-slate-900 transition-colors text-slate-400 hover:text-red-400 group">
+          {/* 4. Tambahkan onClick={handleLogout} di sini */}
+          <button 
+            onClick={handleLogout}
+            className="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-slate-900 transition-colors text-slate-400 hover:text-red-400 group"
+          >
             <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-200 font-bold group-hover:bg-red-900/30">A</div>
             <div className="text-left flex-1"><p className="text-sm font-medium text-white">Super Admin</p><p className="text-xs text-slate-500">admin@uika.ac.id</p></div>
             <LogOut className="w-5 h-5" />
